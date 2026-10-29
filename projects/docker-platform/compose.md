@@ -18,4 +18,4 @@ Je préfère aussi utiliser des montages de journaux **en lecture seule** lorsqu
 - Vérifier les dépendances avant de retirer un port ou un réseau existant.
 - Sauvegarder les données de façon cohérente et tester les restaurations.
 
-→ [Fichiers Compose de démonstration](../../examples/compose/) · [Retour d'expérience](migration.md)
+→ [Reconstruction anonymisée des stacks Compose](../../examples/compose/README.md) · [Retour d'expérience](migration.md)

@@ -1,18 +1,18 @@
-# Exemples génériques — laboratoire uniquement
+# Exemples de configuration basés sur mon architecture
 
-Les fichiers de ce dossier sont **reconstruits et fictifs**, pas des exports de mon infrastructure. Ils illustrent des principes de configuration, pas une installation sécurisée ou prête à lancer.
+Je publie ici des **reconstructions anonymisées de la structure que j'exploite**, et non de petits extraits indépendants recopiés d'un tutoriel.
 
-## Docker Compose
+Le **périmètre technique** est fondé sur mes inventaires : frontal SWAG, relais mail/vocal dans Nginx Stream, CrowdSec LAPI + Web UI, Guacamole/MariaDB/guacd, Arcane + socket Docker, **un réseau externe partagé** et des services distants joints par WireGuard. Les paramètres applicatifs impossibles à vérifier sans lire mes fichiers réels ne sont **pas présentés comme exacts**.
 
-- [SWAG / frontal de test](compose/edge.compose.yaml)
-- [CrowdSec et volumes de journaux](compose/crowdsec.compose.yaml)
-- [Arcane et socket Docker](compose/arcane.compose.yaml)
-- [Guacamole et base de données](compose/guacamole.compose.yaml)
-- [Variables fictives](compose/.env.example)
+## Configuration détaillée
 
-## Nginx
+- [Mode d'emploi, topologie et limites des Compose](compose/README.md)
+- [SWAG — frontal HTTP(S) et Stream TCP/UDP](compose/edge.compose.yaml)
+- [CrowdSec — LAPI, interface Web et logs Nginx RO](compose/crowdsec.compose.yaml)
+- [Guacamole — application, MariaDB et guacd](compose/guacamole.compose.yaml)
+- [Arcane — manager Docker, socket et projets Compose](compose/arcane.compose.yaml)
+- [Variables fictives pour un laboratoire](compose/.env.example)
+- [Nginx : reverse proxies HTTP, Authentik et Stream](nginx/README.md)
+- [CrowdSec : acquisition de logs Nginx](crowdsec/acquis.d/nginx.yaml)
 
-- [Reverse proxy HTTP de démonstration](nginx/http.conf)
-- [Relais Stream TCP de démonstration](nginx/stream.conf)
-
-Les exemples demandent encore des certificats, une politique réseau, une gestion des identifiants, des sauvegardes et des validations applicatives. **Ne pas les déployer tels quels sur un serveur exposé.**
+**Sécurité :** les fichiers ne contiennent pas de secrets, clés, adresses de pairs VPN, domaines d'administration, politiques IAM ni versions détaillées de production. Ils documentent les choix techniques, **pas une configuration prête à démarrer sur Internet**.

@@ -1,19 +1,46 @@
-# Démonstration fictive. Les certificats, nginx.conf et secrets restent à préparer.
+# Modèle anonymisé : disposition SWAG relevée sur un VPS frontal.
+# Ports standard représentatifs d'une pile Web + Mailcow + TeamSpeak.
+# Ne contient ni certificats, ni domaine, ni DOCKER_MODS réels.
 services:
-  web-edge:
+  swag:
     image: lscr.io/linuxserver/swag:latest
+    container_name: swag
     restart: unless-stopped
     environment:
-      TZ: Europe/Paris
-      URL: example.org
-      VALIDATION: http
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
+      TZ: "${TZ:-Europe/Paris}"
+      URL: "${EDGE_DOMAIN:-example.org}"
+      VALIDATION: "${EDGE_VALIDATION:-http}"
+      EMAIL: "${ACME_EMAIL:-admin@example.org}"
+      # Mods réellement déclarés côté edge : Cloudflare et CrowdSec.
+      # Liste exacte non reproduite ; vérifier leur compatibilité localement.
+      DOCKER_MODS: "${SWAG_DOCKER_MODS:-}"
     ports:
-      - "127.0.0.1:18080:80" # test local, pas une publication publique
+      # Accès Web : vérifier le firewall IPv4 ET IPv6 du frontal.
+      - "80:80/tcp"
+      - "443:443/tcp"
+      # Relais Stream de messagerie (TLS/STARTTLS conservés par passthrough).
+      - "25:25/tcp"
+      - "465:465/tcp"
+      - "587:587/tcp"
+      - "993:993/tcp"
+      - "995:995/tcp"
+      - "143:143/tcp"
+      - "110:110/tcp"
+      - "4190:4190/tcp"
+      # Service vocal : TCP transfert de fichiers + UDP voix.
+      - "30033:30033/tcp"
+      - "9987:9987/udp"
     volumes:
       - type: bind
-        source: ./example-data/swag
+        source: "${STACK_ROOT:-./example-data}/swag"
         target: /config
-    networks: [front]
+    networks:
+      - edge
+
 networks:
-  front:
-    name: example-front
+  edge:
+    # Même réseau EXTERNE partagé par les projets Compose du laboratoire.
+    external: true
+    name: example-edge

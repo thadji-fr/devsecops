@@ -32,4 +32,4 @@ Pour un service hébergé **localement sur le VPS**, Nginx peut utiliser le **DN
 
 **Attention :** un VPN chiffré n'est pas une règle de pare-feu ; la segmentation doit être configurée et testée séparément.
 
-→ [Exemples Nginx fictifs](../../examples/nginx/) · [Sécurité de publication](../../docs/publication-policy.md)
+→ [Nginx : reverse proxy HTTP + Stream multi-protocole anonymisés](../../examples/nginx/README.md) · [Sécurité de publication](../../docs/publication-policy.md)

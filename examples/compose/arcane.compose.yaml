@@ -1,19 +1,37 @@
-# Exemple de structure, PAS une installation sécurisée complète.
-# L'accès au socket Docker est hautement privilégié : ne pas lancer tel quel.
-# OIDC/Forward Auth/policies Authentik et règles réseau ne figurent pas ici.
+# Modèle anonymisé : manager sur WireGuard + socket Docker RW.
+# Port d'administration non publié sur toutes les interfaces.
+# Authentik (Forward Auth et policies) est défini dans SWAG/Authentik, PAS ici.
 services:
-  docker-manager:
+  arcane:
     image: ghcr.io/getarcaneapp/manager:v2
+    container_name: arcane
     restart: unless-stopped
+    environment:
+      TZ: "${TZ:-Europe/Paris}"
+      APP_URL: "${ARCANE_PUBLIC_URL:-https://admin.example.org}"
+      ENCRYPTION_KEY: "${ARCANE_ENCRYPTION_KEY:?required_for_test_only}"
+      PROJECTS_DIRECTORY: "${ARCANE_PROJECTS_DIR:-/srv/example/compose-projects}"
     ports:
-      - "127.0.0.1:18090:3552" # démonstration locale uniquement
+      - target: 3552
+        published: "3552"
+        host_ip: "${WG_BIND_IP:-127.0.0.1}"
+        protocol: tcp
     volumes:
       - type: bind
         source: /var/run/docker.sock
         target: /var/run/docker.sock
       - type: bind
-        source: ./example-data/manager-data
+        source: "${STACK_ROOT:-./example-data}/arcane/data"
         target: /app/data
-    networks: [admin]
+      # Identity mapping : Arcane et Docker doivent résoudre les projets pareil.
+      - type: bind
+        source: "${ARCANE_PROJECTS_DIR:-/srv/example/compose-projects}"
+        target: "${ARCANE_PROJECTS_DIR:-/srv/example/compose-projects}"
+    # Aucune déclaration "privileged" : le socket reste toutefois puissant.
+    networks:
+      - edge
+
 networks:
-  admin: {}
+  edge:
+    external: true
+    name: example-edge

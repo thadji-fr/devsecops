@@ -15,4 +15,4 @@ Un gestionnaire qui possède l'accès au **socket Docker** détient potentiellem
 
 Je ne publie ni les adresses des agents ni les politiques d'Authentik. Les tests d'authentification et de non-contournement doivent être réalisés sur l'environnement réel, sans en diffuser les détails.
 
-→ [Retour d'expérience Compose](../docker-platform/compose.md) · [Authentik et Forward Auth](../identity-access/README.md)
+→ [Compose Arcane anonymisé](../../examples/compose/arcane.compose.yaml) · [Forward Auth SWAG anonymisé](../../examples/nginx/arcane-authentik.subdomain.conf) · [Retour d'expérience Compose](../docker-platform/compose.md) · [Authentik et Forward Auth](../identity-access/README.md)

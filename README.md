@@ -4,7 +4,7 @@
 
 J'utilise ce dépôt pour documenter les **systèmes que j'administre**, les choix techniques que j'ai faits et ce que j'apprends au fil des projets. Malgré son nom, il ne se limite pas au DevSecOps : il couvre aussi l'exploitation Linux, les réseaux, la conteneurisation, le stockage et l'automatisation.
 
-Je privilégie les **retours d'expérience concrets**, les exemples compréhensibles et les limites clairement expliquées. Ce dépôt ne contient **ni mes fichiers de production ni la topologie exacte de mon infrastructure**. Les configurations proposées sont des modèles de laboratoire, à adapter et à tester.
+Je privilégie les **retours d'expérience concrets**, les exemples compréhensibles et les limites clairement expliquées. Ce dépôt ne contient **ni mes fichiers de production ni la topologie exacte de mon infrastructure**. Les configurations proposées sont des **reconstructions détaillées et anonymisées**, fondées sur mes choix de déploiement réels (SWAG, WireGuard, CrowdSec, Guacamole, Arcane). Elles ne remplacent ni les fichiers de production ni les tests.
 
 ## Projets et retours d'expérience
 
@@ -41,7 +41,7 @@ Pour les backends **locaux**, j'utilise le **nom DNS Docker et le port interne**
 
 - **[`projects/`](projects/README.md)** : projets réalisés et retours d'expérience, avec ce qui est confirmé ou encore à tester.
 - **[`labs/`](labs/README.md)** : apprentissage et expérimentations, séparés de la production.
-- **[`examples/`](examples/README.md)** : Compose et configurations Nginx fictifs, **non prêts à déployer en production**.
+- **[`examples/`](examples/README.md)** : **Compose et Nginx détaillés** reflétant les rôles, montages, protocoles et réseau de mes stacks, avec valeurs anonymisées. Voir [l’architecture des stacks](examples/compose/README.md) et [la configuration Nginx](examples/nginx/README.md).
 - **[`docs/`](docs/README.md)** : règles de publication et notes transversales.
 - **[`scripts/`](scripts/check-public.py)** : contrôles locaux pour éviter les divulgations accidentelles.
 

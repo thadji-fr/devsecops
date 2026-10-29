@@ -15,4 +15,4 @@ Dans ma configuration, l'accès est réservé à un compte administrateur autori
 
 L'existence d'un écran de connexion ne suffit pas à prouver l'absence de contournement. Je distingue la **configuration déclarée** de sa **validation de bout en bout**.
 
-→ [Gestion centralisée avec Arcane](../docker-management/README.md)
+→ [Gestion centralisée avec Arcane](../docker-management/README.md) · [Exemple SWAG Forward Auth](../../examples/nginx/arcane-authentik.subdomain.conf)

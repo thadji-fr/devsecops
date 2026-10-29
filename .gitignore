@@ -22,3 +22,9 @@ __pycache__/
 Thumbs.db
 .vscode/
 .idea/
+# Éviter d'ajouter par accident une copie locale des données des exemples
+examples/compose/example-data/
+**/example-data/
+*.db
+*.sqlite
+*.sqlite3

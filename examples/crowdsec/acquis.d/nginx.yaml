@@ -1,0 +1,7 @@
+# Exemple de source réellement utilisée : logs Nginx montés en RO dans CrowdSec.
+# Ce fichier est un MODELE, pas un extrait d'acquisitions de production.
+filenames:
+  - /var/log/nginx/access.log
+  - /var/log/nginx/error.log
+labels:
+  type: nginx

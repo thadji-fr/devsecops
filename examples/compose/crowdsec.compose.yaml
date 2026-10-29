@@ -1,20 +1,51 @@
-# Structure pédagogique. Ajouter les acquisitions, credentials et remédiations
-# dans un environnement de test. Aucune clé LAPI n'est fournie ici.
+# Modèle anonymisé : deux services, LAPI sur wg0 et logs SWAG RO.
+# Authentification LAPI / UI, bouncers et acquisitions spécifiques non exportés.
 services:
-  security-engine:
+  crowdsec:
     image: crowdsecurity/crowdsec:latest
+    container_name: crowdsec
     restart: unless-stopped
+    environment:
+      TZ: "${TZ:-Europe/Paris}"
+      COLLECTIONS: "crowdsecurity/nginx"
+    ports:
+      - target: 8080
+        published: "8080"
+        host_ip: "${WG_BIND_IP:-127.0.0.1}"
+        protocol: tcp
     volumes:
       - type: bind
-        source: ./example-data/nginx-logs
+        source: "${STACK_ROOT:-./example-data}/swag/log/nginx"
         target: /var/log/nginx
         read_only: true
       - type: bind
-        source: ./example-data/crowdsec-data
-        target: /var/lib/crowdsec/data
-      - type: bind
-        source: ./example-data/crowdsec-config
+        source: "${STACK_ROOT:-./example-data}/crowdsec/config"
         target: /etc/crowdsec
-    networks: [security]
+      - type: bind
+        source: "${STACK_ROOT:-./example-data}/crowdsec/data"
+        target: /var/lib/crowdsec/data
+    networks:
+      - edge
+
+  crowdsec-web-ui:
+    image: ghcr.io/theduffman85/crowdsec-web-ui:latest
+    container_name: crowdsec-web-ui
+    restart: unless-stopped
+    ports:
+      - target: 3000
+        published: "3000"
+        host_ip: "${WG_BIND_IP:-127.0.0.1}"
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: "${STACK_ROOT:-./example-data}/crowdsec/web-ui"
+        target: /app/data
+    # Les paramètres d'accès LAPI et de sécurité UI sont hors dépôt.
+    # Ne pas lancer l'interface sans contrôle d'accès adapté.
+    networks:
+      - edge
+
 networks:
-  security: {}
+  edge:
+    external: true
+    name: example-edge

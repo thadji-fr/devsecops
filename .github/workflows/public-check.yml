@@ -22,3 +22,5 @@ jobs:
                   yaml.safe_load(handle)
               print('OK:', path)
           PY
+      - name: Cohérence des stacks Compose et des ports Nginx Stream
+        run: python3 scripts/check-example-topology.py

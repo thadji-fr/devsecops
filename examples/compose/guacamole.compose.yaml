@@ -1,25 +1,67 @@
-# Structure de démo : base non initialisée, credentials et TLS à configurer.
-# Ne pas considérer cette stack comme prête pour la production.
+# Modèle anonymisé du triplet Guacamole / MariaDB / guacd.
+# Ports hôte en loopback : SWAG peut utiliser les noms Docker en direct.
+# Le schéma SQL de Guacamole doit être initialisé avant premier usage.
 services:
-  gateway:
+  guacamole:
     image: guacamole/guacamole:latest
-    depends_on: [daemon, database]
-    ports: ["127.0.0.1:18085:8080"]
-    networks: [internal]
-  daemon:
-    image: guacamole/guacd:latest
-    networks: [internal]
-  database:
-    image: mariadb:latest
+    container_name: guacamole
+    restart: unless-stopped
+    depends_on:
+      - guacd
+      - guacamole_db
     environment:
-      MARIADB_DATABASE: guacamole_demo
-      MARIADB_USER: demo_user
-      MARIADB_PASSWORD: "${DEMO_DB_PASSWORD:?set_local_test_password}"
-      MARIADB_ROOT_PASSWORD: "${DEMO_DB_ROOT_PASSWORD:?set_local_test_root_password}"
+      GUACD_HOSTNAME: guacd
+      MYSQL_HOSTNAME: guacamole_db
+      MYSQL_PORT: "3306"
+      MYSQL_DATABASE: "${GUAC_DB_NAME:-guacamole_db}"
+      MYSQL_USER: "${GUAC_DB_USER:-guacamole_user}"
+      MYSQL_PASSWORD: "${GUAC_DB_PASSWORD:?required_for_test_only}"
+    ports:
+      - "127.0.0.1:8085:8080/tcp"
     volumes:
       - type: bind
-        source: ./example-data/guacamole-db
+        source: "${STACK_ROOT:-./example-data}/guacamole/recordings"
+        target: /var/lib/guacamole/recordings
+        read_only: true
+    networks:
+      - edge
+
+  guacamole_db:
+    image: mariadb:latest
+    container_name: guacamole-db
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: "${GUAC_DB_NAME:-guacamole_db}"
+      MARIADB_USER: "${GUAC_DB_USER:-guacamole_user}"
+      MARIADB_PASSWORD: "${GUAC_DB_PASSWORD:?required_for_test_only}"
+      MARIADB_ROOT_PASSWORD: "${GUAC_DB_ROOT_PASSWORD:?required_for_test_only}"
+    ports:
+      - "127.0.0.1:3306:3306/tcp"
+    volumes:
+      - type: bind
+        source: "${STACK_ROOT:-./example-data}/guacamole/db"
         target: /var/lib/mysql
-    networks: [internal]
+    networks:
+      - edge
+
+  guacd:
+    image: guacamole/guacd:latest
+    container_name: guacd
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:4822:4822/tcp"
+    volumes:
+      - type: bind
+        source: "${STACK_ROOT:-./example-data}/guacamole/drive"
+        target: /drive
+      - type: bind
+        source: "${STACK_ROOT:-./example-data}/guacamole/recordings"
+        target: /var/lib/guacamole/recordings
+        # Même dossier source dans CET EXEMPLE ; correspondance en prod non prouvée.
+    networks:
+      - edge
+
 networks:
-  internal: {}
+  edge:
+    external: true
+    name: example-edge
