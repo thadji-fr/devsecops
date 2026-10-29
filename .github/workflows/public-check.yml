@@ -1,0 +1,24 @@
+name: Public content check
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Analyse locale des contenus publics
+        run: python3 scripts/check-public.py
+      - name: Validation syntaxique des exemples YAML
+        run: |
+          python3 -m pip install --quiet PyYAML
+          python3 - <<'PY'
+          from pathlib import Path
+          import yaml
+          for path in sorted(Path('examples').rglob('*.yaml')):
+              with path.open(encoding='utf-8') as handle:
+                  yaml.safe_load(handle)
+              print('OK:', path)
+          PY

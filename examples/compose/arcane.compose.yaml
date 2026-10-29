@@ -1,0 +1,19 @@
+# Exemple de structure, PAS une installation sécurisée complète.
+# L'accès au socket Docker est hautement privilégié : ne pas lancer tel quel.
+# OIDC/Forward Auth/policies Authentik et règles réseau ne figurent pas ici.
+services:
+  docker-manager:
+    image: ghcr.io/getarcaneapp/manager:v2
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:18090:3552" # démonstration locale uniquement
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: ./example-data/manager-data
+        target: /app/data
+    networks: [admin]
+networks:
+  admin: {}

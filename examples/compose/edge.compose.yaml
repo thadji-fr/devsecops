@@ -1,0 +1,19 @@
+# Démonstration fictive. Les certificats, nginx.conf et secrets restent à préparer.
+services:
+  web-edge:
+    image: lscr.io/linuxserver/swag:latest
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Paris
+      URL: example.org
+      VALIDATION: http
+    ports:
+      - "127.0.0.1:18080:80" # test local, pas une publication publique
+    volumes:
+      - type: bind
+        source: ./example-data/swag
+        target: /config
+    networks: [front]
+networks:
+  front:
+    name: example-front

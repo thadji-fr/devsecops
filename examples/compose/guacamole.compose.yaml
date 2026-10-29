@@ -1,0 +1,25 @@
+# Structure de démo : base non initialisée, credentials et TLS à configurer.
+# Ne pas considérer cette stack comme prête pour la production.
+services:
+  gateway:
+    image: guacamole/guacamole:latest
+    depends_on: [daemon, database]
+    ports: ["127.0.0.1:18085:8080"]
+    networks: [internal]
+  daemon:
+    image: guacamole/guacd:latest
+    networks: [internal]
+  database:
+    image: mariadb:latest
+    environment:
+      MARIADB_DATABASE: guacamole_demo
+      MARIADB_USER: demo_user
+      MARIADB_PASSWORD: "${DEMO_DB_PASSWORD:?set_local_test_password}"
+      MARIADB_ROOT_PASSWORD: "${DEMO_DB_ROOT_PASSWORD:?set_local_test_root_password}"
+    volumes:
+      - type: bind
+        source: ./example-data/guacamole-db
+        target: /var/lib/mysql
+    networks: [internal]
+networks:
+  internal: {}

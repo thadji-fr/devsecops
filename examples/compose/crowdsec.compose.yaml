@@ -1,0 +1,20 @@
+# Structure pédagogique. Ajouter les acquisitions, credentials et remédiations
+# dans un environnement de test. Aucune clé LAPI n'est fournie ici.
+services:
+  security-engine:
+    image: crowdsecurity/crowdsec:latest
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./example-data/nginx-logs
+        target: /var/log/nginx
+        read_only: true
+      - type: bind
+        source: ./example-data/crowdsec-data
+        target: /var/lib/crowdsec/data
+      - type: bind
+        source: ./example-data/crowdsec-config
+        target: /etc/crowdsec
+    networks: [security]
+networks:
+  security: {}
