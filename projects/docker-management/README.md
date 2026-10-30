@@ -9,10 +9,10 @@ J'y retrouve notamment la gestion des **conteneurs**, des projets **Docker Compo
 
 ## Sécurité
 
-J'ai déclaré **Authentik (OIDC et Forward Auth via SWAG)** avec des permissions limitées au compte autorisé. La protection des comptes et des accès réseau ne retire pas la sensibilité d'une interface capable d'agir sur les conteneurs.
+J'ai déclaré **Authentik (OIDC et Forward Auth via Nginx)** avec des permissions limitées au compte autorisé. La protection des comptes et des accès réseau ne retire pas la sensibilité d'une interface capable d'agir sur les conteneurs.
 
 Un gestionnaire qui possède l'accès au **socket Docker** détient potentiellement des capacités élevées sur l'hôte : il faut maîtriser le chemin réseau, les droits, les mises à jour, l'audit et les accès de contournement.
 
 Je ne publie ni les adresses des agents ni les politiques d'Authentik. Les tests d'authentification et de non-contournement doivent être réalisés sur l'environnement réel, sans en diffuser les détails.
 
-→ [Compose Arcane anonymisé](../../examples/compose/arcane.compose.yaml) · [Forward Auth SWAG anonymisé](../../examples/nginx/arcane-authentik.subdomain.conf) · [Retour d'expérience Compose](../docker-platform/compose.md) · [Authentik et Forward Auth](../identity-access/README.md)
+→ [Compose Arcane anonymisé](../../examples/compose/arcane.compose.yaml) · [Forward Auth Nginx anonymisé](../../examples/nginx/arcane-authentik.subdomain.conf) · [Retour d'expérience Compose](../docker-platform/compose.md) · [Authentik et Forward Auth](../identity-access/README.md)
