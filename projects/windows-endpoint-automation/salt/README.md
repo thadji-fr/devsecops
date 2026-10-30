@@ -1,7 +1,16 @@
-# Salt — orchestration documentaire
+# Salt : administration et orchestration distante
 
-La [définition d'état](states/browser-update.sls) représente une mise à niveau de navigateur avec le module Salt Chocolatey. Il s'agit d'un exemple **fictif**, non extrait de la configuration Salt d'origine.
+Les scripts de préparation Windows 11 comprennent l'installation de **Salt Minion via Chocolatey**. Une fois rattaché et autorisé auprès d'un Salt Master, ce minion permet l'administration distante du poste.
 
-L'état utilise `chocolatey.upgraded` et reçoit la version corrigée ainsi que l'adresse du dépôt par Pillar. Ces paramètres doivent être renseignés dans un laboratoire et testés avec les versions exactes de Salt et Chocolatey.
+Salt peut :
+- cibler un ou plusieurs minions par nom, liste ou Grains ;
+- exécuter des commandes CMD et PowerShell, ainsi que des scripts ;
+- consulter des informations système, contrôler des services et récupérer des retours ;
+- appliquer des états de configuration ;
+- déclencher, si nécessaire, des opérations Chocolatey à distance.
 
-Le ciblage des machines, le traitement des retours, la gestion des redémarrages et les règles de remédiation CVE ne sont **pas implémentés** dans cet exemple.
+**Salt n'est pas un gestionnaire de paquets** et ne se limite pas à la remédiation des CVE. **Chocolatey reste l'outil Windows chargé de l'installation et de la mise à jour des logiciels.**
+
+Voir les [exemples d'exécution distante](remote-execution.md), la [documentation du cas d'usage](../docs/02-salt-chocolatey-administration.md) et l'[état facultatif de mise à jour](states/browser-update.sls).
+
+Les configurations du Salt Master historique ne figurent pas dans les archives fournies ; les commandes publiques utilisent donc des minions fictifs et ne constituent pas des preuves d'exécution sur le parc original.
