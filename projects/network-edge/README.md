@@ -5,7 +5,7 @@ J'utilise un VPS comme **point d'entrée**, pour éviter de publier directement 
 ```mermaid
 flowchart LR
    Client[Client Web] --> CF[Cloudflare]
-   CF --> Proxy["VPS · SWAG/Nginx"]
+   CF --> Proxy["VPS · Nginx"]
    AppClient[Client non HTTP] --> Stream["VPS · Nginx Stream"]
    Proxy --> Tunnel[WireGuard]
    Stream --> Tunnel
