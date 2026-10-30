@@ -26,9 +26,9 @@ jobs:
         run: python3 scripts/check-example-topology.py
       - name: Vérifier la résolution des quatre Compose sans les démarrer
         env:
-          GUAC_DB_PASSWORD: ci-only-password
-          GUAC_DB_ROOT_PASSWORD: ci-only-root-password
-          ARCANE_ENCRYPTION_KEY: ci-only-encryption-key-not-for-production
+          GUAC_DB_PASSWORD: ci
+          GUAC_DB_ROOT_PASSWORD: ci
+          ARCANE_ENCRYPTION_KEY: ci
         run: |
           docker compose version
           for file in examples/compose/*.compose.yaml; do
