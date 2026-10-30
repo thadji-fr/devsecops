@@ -19,7 +19,7 @@ Les contrôles suivants proviennent d'un inventaire réalisé sur le VPS frontal
 
 Un contrôle **en lecture seule** avec `nginx -T` sur le conteneur de frontal a confirmé que l'ensemble de la configuration était accepté par Nginx. Les fichiers de proxy HTTP et de relais Stream ont été détectés, ainsi que les directives d'écoute correspondant aux protocoles documentés. Le script de comparaison utilisé n'a pas signalé d'écoute supplémentaire dans son périmètre d'analyse.
 
-Le même relevé détecte des références à **Authentik, CrowdSec, Real IP et PROXY protocol** dans les fichiers chargés. Cela établit leur **présence structurelle**, pas leur efficacité ni leur placement exact sur les routes. En particulier, l'usage de **PROXY protocol sur le relais SMTP** n'a pas encore été déterminé. Les nombreuses directives `proxy_pass` à variables ne doivent pas être interprétées comme autant de services indépendants.
+Le même relevé détecte des références à **Authentik, CrowdSec, Real IP et PROXY protocol** dans les fichiers chargés. Cela établit leur **présence structurelle**, pas leur efficacité ni leur placement exact sur les routes. Un second audit en lecture seule a ensuite confirmé que **Nginx émet PROXY protocol vers l'upstream SMTP** (`proxy_protocol on;`) mais **ne l'attend pas sur l'écoute SMTP publique**. Des directives d'émission PROXY protocol sont également présentes dans Stream, sans que l'audit anonyme identifie tous les relais concernés. Cette observation ne démontre **ni l'acceptation de l'en-tête côté backend, ni la préservation effective de l'IP client, ni la sécurité du chemin**. Les nombreuses directives `proxy_pass` à variables ne doivent pas être interprétées comme autant de services indépendants.
 
 Pour approfondir ce point sans afficher les valeurs sensibles, j'ai ajouté le script [`scripts/audit-nginx-flags-safe.py`](../../scripts/audit-nginx-flags-safe.py). Il inspecte `nginx -T` en mémoire et n'imprime que des indicateurs prédéfinis `OUI`, `NON` ou `INDÉTERMINÉ`. Il ne vérifie pas la pertinence des règles d'accès et n'effectue aucune requête réseau vers les backends.
 
@@ -56,7 +56,7 @@ python3 scripts/test-nginx-examples.py --http-only
 | Cas | Méthode attendue | Preuve publique possible | État |
 |---|---|---|---|
 | Parcours client → Nginx → service HTTP distant | Test depuis un client autorisé avec réponse applicative connue | Résultat positif/négatif anonymisé | À confirmer |
-| Relais TCP messagerie | Vérifier d'abord la direction de PROXY protocol (entrant/sortant) sur le relais SMTP, puis la négociation sur un service autorisé | Résultat anonymisé, sans noms d'hôte ni IP | Structure en cours d'audit ; chemin complet à confirmer |
+| Relais TCP messagerie | PROXY protocol émis vers l'upstream SMTP, non attendu en entrée : **confirmé par audit passif**. Vérifier séparément que le service destinataire accepte l'en-tête puis qu'une négociation SMTP réelle fonctionne | Résultat anonymisé, sans noms d'hôte ni IP | Directive Nginx confirmée ; backend et chemin complet à confirmer |
 | Relais UDP vocal | Test UDP adapté au protocole avec un client prévu à cet effet | Succès/échec, sans endpoints | À confirmer |
 | Politique réseau WireGuard | Essais autorisés puis refusés entre hôtes, et vérification des règles sur les deux extrémités | Matrice de résultats sans règles ni adresses | À confirmer |
 | Accès direct à l'origine / IPv6 | Essais depuis un réseau externe contrôlé, pour vérifier le refus de contournement du frontal | Résultat du test et remédiation | À confirmer |

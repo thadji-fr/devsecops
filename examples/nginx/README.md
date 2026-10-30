@@ -8,7 +8,7 @@ Les fichiers conservent **l'organisation Nginx de l'infrastructure observée**, 
 | [`remote-wireguard.subdomain.conf`](remote-wireguard.subdomain.conf) | Backend HTTP distant via **IP du tunnel + port** (adresse RFC 5737) |
 | [`arcane-authentik.subdomain.conf`](arcane-authentik.subdomain.conf) | Interface d'administration contrôlée par **Forward Auth Authentik via Nginx** |
 | [`stream.conf`](stream.conf) | Bloc `stream` unique dans `nginx.conf` qui charge `stream-confs/*.conf` |
-| [`stream-confs/mail-relay.conf`](stream-confs/mail-relay.conf) | Relais TCP en **passthrough** vers la messagerie |
+| [`stream-confs/mail-relay.conf`](stream-confs/mail-relay.conf) | Relais TCP en **passthrough** vers la messagerie ; **en-tête PROXY protocol émis vers l'upstream SMTP uniquement** dans l'exemple |
 | [`stream-confs/voice-relay.conf`](stream-confs/voice-relay.conf) | Relais vocal **UDP + TCP** |
 
 ## Arborescence d'installation habituelle (dans le conteneur Nginx)
@@ -49,7 +49,7 @@ Pour comparer les *familles de directives chargées* à celles des exemples, je 
 python3 scripts/audit-nginx-flags-safe.py
 ```
 
-Les résultats incluent notamment la distinction entre **PROXY protocol entrant** (`listen ... proxy_protocol`) et **sortant** (`proxy_protocol on;`) dans les fichiers de relais Stream, y compris sur le bloc SMTP lorsqu'il peut être identifié. Cela **ne prouve pas** que le backend accepte PROXY protocol. La lecture est strictement passive, sans rechargement ni modification de service. Contrôler le script avant son exécution.
+Le relevé en lecture seule a confirmé **PROXY protocol en sortie du relais SMTP**, mais **pas en entrée depuis les clients**. L'exemple Nginx reflète désormais cette directive. En laboratoire, le backend simulé vérifie qu'il reçoit l'en-tête PROXY v1 avant les données TCP. L'audit distingue aussi **PROXY protocol entrant** (`listen ... proxy_protocol`) et **sortant** (`proxy_protocol on;`) pour les autres fichiers Stream. Cela **ne prouve pas** que le backend accepte PROXY protocol. La lecture est strictement passive, sans rechargement ni modification de service. Contrôler le script avant son exécution.
 
 ## Limites et contrôles
 

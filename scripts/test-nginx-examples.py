@@ -147,7 +147,20 @@ def tcp_echo(stop):
                 continue
             with peer:
                 peer.settimeout(2)
-                peer.sendall(peer.recv(128))
+                # Le backend de laboratoire DOIT recevoir l'en-tête PROXY v1
+                # avant les données du client, comme sur l'exemple SMTP public.
+                reader = peer.makefile("rb")
+                with reader:
+                    header = reader.readline(108)
+                    if not (
+                        header.startswith(b"PROXY TCP4 ")
+                        and header.endswith(b"\r\n")
+                        and len(header.split()) == 6
+                    ):
+                        continue
+                    data = reader.read(len(b"demo-tcp"))
+                    if data:
+                        peer.sendall(data)
 
 
 def udp_echo(stop):
@@ -210,7 +223,7 @@ def smoke_test(work, config):
             s.settimeout(4)
             s.sendall(payload)
             assert s.recv(256) == payload
-        print("OK : Stream TCP de laboratoire → backend simulé")
+        print("OK : Stream TCP avec en-tête PROXY v1 → backend SMTP simulé")
 
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.settimeout(4)

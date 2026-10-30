@@ -45,4 +45,15 @@ published = {(int(p.split(":")[-1].split("/")[0]),p.split("/")[-1]) for p in edg
 assert listen == published - {(80,"tcp"),(443,"tcp")}, (listen,published)
 assert (9987,"udp") in listen and (30033,"tcp") in listen
 assert "stream {" in (base/"nginx"/"stream.conf").read_text()
+
+# Le relevé sur le VPS a confirmé PROXY protocol émis par Nginx sur
+# l'upstream SMTP ; il n'est PAS attendu du client entrant. On exige cette
+# directive dans l'exemple sans l'activer par erreur sur les autres relais.
+mail_stream = (base / "nginx" / "stream-confs" / "mail-relay.conf").read_text(encoding="utf-8")
+blocks = re.findall(r"\bserver\s*\{[^{}]*\}", mail_stream)
+smtp = [b for b in blocks if re.search(r"\blisten\s+25\s*;", b)]
+assert len(smtp) == 1, "SMTP stream block missing or duplicated"
+assert re.search(r"\bproxy_protocol\s+on\s*;", smtp[0]), "SMTP must emit PROXY protocol"
+assert not re.search(r"\blisten\s+25\s+proxy_protocol\b", smtp[0]), "SMTP must not expect incoming PROXY protocol"
+assert not any(re.search(r"\bproxy_protocol\s+on\s*;", b) for b in blocks if b not in smtp), "PROXY protocol not verified on other mail streams"
 print("OK : réseau externe, bind mounts, WireGuard/localhost, montages Nginx/CrowdSec, ports HTTP/Stream")
