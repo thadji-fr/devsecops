@@ -4,7 +4,7 @@ Je sépare les **composants déjà utilisés**, les **contrôles restant à dém
 
 ## Pratiques déjà présentes dans mon infrastructure
 
-- Administration Linux, Docker Compose, Nginx/SWAG, réseaux privés WireGuard.
+- Administration Linux, Docker Compose, Nginx, réseaux privés WireGuard.
 - Sécurité avec CrowdSec, Authentik (OIDC / Forward Auth) et contrôle d'accès.
 - Administration centralisée des environnements Docker avec Arcane.
 - Stockage ZFS, suivi des incidents et principes de continuité.
