@@ -25,7 +25,7 @@ mounts = lambda service: {v["target"]: v for v in service["volumes"]}
 swag_config = mounts(edge["services"]["swag"])["/config"]["source"]
 crowd_logs = mounts(crowd["services"]["crowdsec"])["/var/log/nginx"]
 assert crowd_logs["read_only"] is True
-assert crowd_logs["source"] == swag_config + "/log/nginx", "Log source SWAG != CrowdSec"
+assert crowd_logs["source"] == swag_config + "/log/nginx", "Log source Nginx != CrowdSec"
 assert mounts(crowd["services"]["crowdsec"])["/etc/crowdsec"]
 assert mounts(crowd["services"]["crowdsec"])["/var/lib/crowdsec/data"]
 assert mounts(guac["services"]["guacamole"])["/var/lib/guacamole/recordings"]["read_only"]
@@ -45,4 +45,4 @@ published = {(int(p.split(":")[-1].split("/")[0]),p.split("/")[-1]) for p in edg
 assert listen == published - {(80,"tcp"),(443,"tcp")}, (listen,published)
 assert (9987,"udp") in listen and (30033,"tcp") in listen
 assert "stream {" in (base/"nginx"/"stream.conf").read_text()
-print("OK : réseau externe, bind mounts, WireGuard/localhost, montages SWAG/CrowdSec, ports HTTP/Stream")
+print("OK : réseau externe, bind mounts, WireGuard/localhost, montages Nginx/CrowdSec, ports HTTP/Stream")
