@@ -24,6 +24,12 @@ if /I "%DEPLOY_PROFILE%"=="lab" (
  if errorlevel 1 exit /b 23
 )
 
+rem Salt Minion est installe pendant la preparation Windows 11.
+rem La configuration du Salt Master (adresse, certificats, cle) est
+rem separee de ce script public pour proteger l'environnement d'origine.
+choco install saltminion --yes --no-progress >>"%LOGS%\stage02.log" 2>&1
+if errorlevel 1 exit /b 25
+
 rem Extraction de pilotes + dpinst64.exe observee dans la chaine source.
 rem Le binaire et les pilotes ne sont jamais distribues dans ce depot.
 if exist "%ROOT%\Drivers\dpinst64.exe" (
