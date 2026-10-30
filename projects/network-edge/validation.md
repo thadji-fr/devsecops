@@ -25,6 +25,12 @@ Un contrôle indépendant sur le conteneur Postfix du serveur de messagerie a co
 
 Pour approfondir ce point sans afficher les valeurs sensibles, j'ai ajouté le script [`scripts/audit-nginx-flags-safe.py`](../../scripts/audit-nginx-flags-safe.py). Il inspecte `nginx -T` en mémoire et n'imprime que des indicateurs prédéfinis `OUI`, `NON` ou `INDÉTERMINÉ`. Il ne vérifie pas la pertinence des règles d'accès et n'effectue aucune requête réseau vers les backends.
 
+### Vérification de la correspondance Nginx → Mailcow encore ouverte
+
+J'ai préparé un [audit local non intrusif des upstreams Nginx](../../scripts/audit-nginx-mailcow-routes-safe.py) : il compare uniquement les **numéros de ports cibles** des relais SMTP, SMTPS et Submission aux écoutes Postfix compatibles PROXY protocol. Il n'imprime ni les destinations, ni les noms d'upstreams, ni les règles réelles. Il renvoie `OUI`, `NON` ou `INDÉTERMINÉ` et se teste avec des fixtures artificielles dans GitHub Actions.
+
+Une correspondance `OUI` confirme seulement **le port indiqué dans Nginx**, pas la traduction éventuelle des ports Docker, la connectivité WireGuard ou une transaction SMTP réussie. Une réponse `NON` peut aussi refléter une traduction de port ou un intermédiaire : elle appelle une analyse, pas un changement immédiat. **Le contrôle de ce routage sur le frontal réel reste à effectuer.**
+
 Les captures d'écran brutes, IP WireGuard, compteurs détaillés, adresses d'administration et chemins sources restent **hors du dépôt public**.
 
 ## 2. Tests reproductibles sur les exemples PUBLICS

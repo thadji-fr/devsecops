@@ -51,6 +51,16 @@ python3 scripts/audit-nginx-flags-safe.py
 
 Le relevé en lecture seule a confirmé **PROXY protocol en sortie du relais SMTP**, mais **pas en entrée depuis les clients**. Les paramètres de service du serveur de messagerie confirment des écoutes Postfix dédiées compatibles ; **la liaison effective Nginx → écoute Mailcow n'est pas encore vérifiée**. L'exemple Nginx reflète désormais cette directive. En laboratoire, le backend simulé vérifie qu'il reçoit l'en-tête PROXY v1 avant les données TCP. L'audit distingue aussi **PROXY protocol entrant** (`listen ... proxy_protocol`) et **sortant** (`proxy_protocol on;`) pour les autres fichiers Stream. Cela **ne prouve pas** que le backend accepte PROXY protocol. La lecture est strictement passive, sans rechargement ni modification de service. Contrôler le script avant son exécution.
 
+## Vérifier localement le port de destination Nginx → Mailcow
+
+L'audit passif complémentaire [`audit-nginx-mailcow-routes-safe.py`](../../scripts/audit-nginx-mailcow-routes-safe.py) analyse les *upstreams* et les directives `listen` dans les fichiers Stream chargés. Les seules valeurs affichées sont des indicateurs `OUI` / `NON` / `INDÉTERMINÉ` pour les ports dédiés SMTP, SMTPS et Submission et la présence d'une directive PROXY protocol.
+
+```bash
+python3 scripts/audit-nginx-mailcow-routes-safe.py
+```
+
+Il faut le lancer **sur le frontal Nginx**, pas sur le serveur Postfix. Le script ne modifie aucun fichier ni service. Il ne sait pas reconstituer une éventuelle redirection de port par Docker ou un relais intermédiaire. `NON` ne constitue donc pas, seul, une preuve de panne ou une justification de modification en production.
+
 ## Limites et contrôles
 
 1. Les destinations `192.0.2.10` sont **non routables pour ton VPN** : remplace-les dans un banc de test par les vraies adresses de ce banc, jamais dans ce dépôt public.

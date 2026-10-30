@@ -26,6 +26,8 @@ jobs:
         run: python3 scripts/check-example-topology.py
       - name: Tester le lecteur Nginx anonymisé sur des données synthétiques
         run: python3 scripts/test-audit-nginx-flags-safe.py
+      - name: Tester le classificateur anonyme des ports SMTP de Nginx
+        run: python3 scripts/test-audit-nginx-mailcow-routes-safe.py
       - name: Vérifier la résolution des quatre Compose sans les démarrer
         env:
           GUAC_DB_PASSWORD: ci
