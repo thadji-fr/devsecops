@@ -32,4 +32,6 @@ Pour un service hébergé **localement sur le VPS**, Nginx peut utiliser le **DN
 
 **Attention :** un VPN chiffré n'est pas une règle de pare-feu ; la segmentation doit être configurée et testée séparément.
 
-→ [Nginx : reverse proxy HTTP + Stream multi-protocole anonymisés](../../examples/nginx/README.md) · [Sécurité de publication](../../docs/publication-policy.md)
+J'ai séparé les **preuves observées sur l'infrastructure** des **tests exécutés sur les exemples publics** : la syntaxe seule ne prouve pas le routage réel ni le filtrage.
+
+→ **[Matrice de vérification et tests reproductibles](validation.md)** · [Nginx : HTTP + Stream multi-protocole anonymisés](../../examples/nginx/README.md) · [Sécurité de publication](../../docs/publication-policy.md)

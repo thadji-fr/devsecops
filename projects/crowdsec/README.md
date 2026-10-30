@@ -21,4 +21,4 @@ J'ai observé de la **collecte de journaux**, des **alertes provenant d'un agent
 
 J'ai conservé les résultats d'exploitation détaillés hors du périmètre public. Les exemples de ce dépôt n'intègrent ni clé LAPI, ni configuration de remédiation réelle.
 
-→ [Compose LAPI + UI](../../examples/compose/crowdsec.compose.yaml) · [Acquisition des logs Nginx](../../examples/crowdsec/acquis.d/nginx.yaml) · [Politique de publication](../../docs/publication-policy.md)
+→ [Compose LAPI + UI](../../examples/compose/crowdsec.compose.yaml) · [Acquisition des logs Nginx](../../examples/crowdsec/acquis.d/nginx.yaml) · [Vérifications réalisées / manquantes](../network-edge/validation.md) · [Politique de publication](../../docs/publication-policy.md)

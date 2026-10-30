@@ -14,5 +14,6 @@ Le **périmètre technique** est fondé sur mes inventaires : frontal Nginx, rel
 - [Variables fictives pour un laboratoire](compose/.env.example)
 - [Nginx : reverse proxies HTTP, Authentik et Stream](nginx/README.md)
 - [CrowdSec : acquisition de logs Nginx](crowdsec/acquis.d/nginx.yaml)
+- [Tests Nginx et matrice de validations (réelles vs laboratoire)](../projects/network-edge/validation.md)
 
 **Sécurité :** les fichiers ne contiennent pas de secrets, clés, adresses de pairs VPN, domaines d'administration, politiques IAM ni versions détaillées de production. Ils documentent les choix techniques, **pas une configuration prête à démarrer sur Internet**.

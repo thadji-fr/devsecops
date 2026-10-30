@@ -7,7 +7,7 @@ Ce dossier modélise des stacks **séparées**, comme celles relevées dans mon 
                  │          │
          Réseau Docker      Tunnel WireGuard
           example-edge      vers serveurs distants
-           ├── CrowdSec       ├── Web → service:port (HTTP)
+           ├── CrowdSec       ├── Web → IP VPN:port (HTTP)
            ├── Guacamole      └── Mail/voix → IP VPN:port (Stream)
            ├── MariaDB
            ├── guacd
@@ -34,6 +34,10 @@ Le **même chemin fictif** `STACK_ROOT/swag/log/nginx` est utilisé par le conte
 ### Authentik et Arcane
 
 Arcane me permet de centraliser la gestion de plusieurs environnements Docker (conteneurs, projets Compose, réseaux, volumes, images, journaux et console). J'ai placé son accès Web derrière **Nginx avec Forward Auth**, et **Authentik décide des autorisations par politique**, réservées à mon compte selon ma configuration. Le fichier Compose **ne contient pas** les providers, secrets ou règles Authentik. Voir [le reverse proxy anonymisé](../nginx/arcane-authentik.subdomain.conf).
+
+### Tests automatiques
+
+Le workflow public vérifie maintenant les quatre déclarations via `docker compose config --quiet` **sans démarrer de conteneur**, avec de faux identifiants. Cela vérifie la résolution de Compose, pas l'état réel des services ni la sécurité des fichiers déployés.
 
 ### Validation sans déployer
 

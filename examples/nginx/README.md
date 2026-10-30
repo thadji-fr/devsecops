@@ -27,6 +27,20 @@ Les fichiers conservent **l'organisation Nginx de l'infrastructure observée**, 
 
 Les fichiers `.subdomain.conf` sont chargés par l'include Nginx sous `http {}`, tandis que les fichiers Stream sont chargés par le bloc `stream {}` au niveau principal. **Ne pas créer de deuxième bloc `stream`** si le fichier principal en possède déjà un. Les certificats et includes `ssl.conf`, `resolver.conf`, `proxy.conf`, `authentik-server.conf` et `authentik-location.conf` appartiennent à cette installation Nginx : leurs versions et les éventuelles personnalisations doivent être contrôlées séparément.
 
+## Tests de syntaxe et de circulation (laboratoire)
+
+Les fragments de ce dossier sont assemblés **sans les modifier dans Git** dans un répertoire temporaire, avec un certificat autosigné et des includes de test. Puis la CI lance `nginx -t` et un test de chemin **HTTP(S), TCP et UDP**, avec des backends émulés en `127.0.0.1`. La configuration de test remplace uniquement en mémoire les adresses d'exemple et les ports pour éviter tout accès à une machine réelle.
+
+```bash
+python3 scripts/test-nginx-examples.py --smoke
+```
+
+Le script est lancé depuis la racine du dépôt avec Nginx, OpenSSL et le module Nginx Stream installés. Pour une vérification syntaxique HTTP seule : `python3 scripts/test-nginx-examples.py --http-only`.
+
+**Attention : les includes Authentik du laboratoire sont des doublures.** Leur réponse favorable ne teste ni la véritable authentification, ni les permissions, ni un contournement possible du backend. Les certificats ne valident pas TLS en production, et ces tests ne touchent pas WireGuard.
+
+→ [Matrice des preuves réelles et des contrôles encore ouverts](../../projects/network-edge/validation.md).
+
 ## Limites et contrôles
 
 1. Les destinations `192.0.2.10` sont **non routables pour ton VPN** : remplace-les dans un banc de test par les vraies adresses de ce banc, jamais dans ce dépôt public.

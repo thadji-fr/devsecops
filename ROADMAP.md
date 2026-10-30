@@ -11,6 +11,13 @@ Je sépare les **composants déjà utilisés**, les **contrôles restant à dém
 
 Les détails d'exploitation restent privés ; voir les [projets](projects/README.md) pour les retours d'expérience publics.
 
+## Contrôles reproductibles dans le dépôt
+
+- Contrôle automatique des secrets évidents, YAML, liens logiques entre montages et ports.
+- Résolution des modèles Compose sans lancement de conteneurs.
+- Validation `nginx -t` sur des fragments anonymisés, puis tests HTTP(S), TCP et UDP **sur des backends simulés en localhost**. Ce n'est pas une preuve de routage WireGuard ou de protection du VPS.
+- Matrice de preuves : [Nginx / WireGuard / CrowdSec](projects/network-edge/validation.md).
+
 ## Qualité d'exploitation à approfondir
 
 - Tests de restauration et sauvegardes cohérentes.

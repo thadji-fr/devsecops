@@ -24,3 +24,20 @@ jobs:
           PY
       - name: Cohérence des stacks Compose et des ports Nginx Stream
         run: python3 scripts/check-example-topology.py
+      - name: Vérifier la résolution des quatre Compose sans les démarrer
+        env:
+          GUAC_DB_PASSWORD: ci-only-password
+          GUAC_DB_ROOT_PASSWORD: ci-only-root-password
+          ARCANE_ENCRYPTION_KEY: ci-only-encryption-key-not-for-production
+        run: |
+          docker compose version
+          for file in examples/compose/*.compose.yaml; do
+            docker compose --env-file examples/compose/.env.example -f "$file" config --quiet
+            echo "OK : $file"
+          done
+      - name: Installer Nginx et le module Stream dans le runner isolé
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq nginx libnginx-mod-stream openssl
+      - name: Valider les fragments Nginx et les relais HTTP TCP UDP simulés
+        run: python3 scripts/test-nginx-examples.py --smoke

@@ -19,6 +19,8 @@ Je privilégie les **retours d'expérience concrets**, les exemples compréhensi
 
 Les projets décrivent des solutions effectivement utilisées dans mon environnement, **sans revendiquer de tests ou de garanties que je n'ai pas mesurés**.
 
+Pour Nginx, WireGuard et CrowdSec, j'ai ouvert une [**matrice des preuves et vérifications**](projects/network-edge/validation.md) : les contrôles historiques de production y sont séparés des validations automatiques des configurations publiques et des tests de filtrage encore nécessaires.
+
 ## Architecture : les principes
 
 ```mermaid
