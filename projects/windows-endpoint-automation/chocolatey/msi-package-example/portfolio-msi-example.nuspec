@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>portfolio-msi-example</id>
+    <version>1.0.0</version>
+    <title>Generic MSI Packaging Example</title>
+    <authors>Technical Portfolio</authors>
+    <description>Exemple fictif, sans installateur ni logiciel historique.</description>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  </metadata>
+</package>

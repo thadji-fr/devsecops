@@ -1,0 +1,15 @@
+# Never publish original packages, installers, logs or secrets
+*.msi
+*.msp
+*.exe
+*.nupkg
+*.log
+*.pfx
+*.p12
+*.pem
+*.key
+.env
+.env.*
+secrets/
+private/
+production/

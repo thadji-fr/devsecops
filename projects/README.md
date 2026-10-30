@@ -10,5 +10,6 @@ Chaque dossier décrit **un sujet pratiqué** et ce que j'en ai retiré. Je sép
 | IAM | Authentik, OIDC et Forward Auth | [Contrôle d'accès](identity-access/README.md) |
 | Administration | Arcane et plusieurs environnements Docker | [Administration centralisée](docker-management/README.md) |
 | Stockage | ZFS, sauvegarde et continuité | [Stockage et résilience](storage-reliability/README.md) |
+| Windows | PXE, Unattended, PowerShell, Chocolatey, Salt et maintenance logicielle | [Automatisation des postes Windows](windows-endpoint-automation/README.md) |
 
 **Pour les prochains projets :** créer un dossier de sujet et reprendre le [modèle](../templates/PROJECT.md), sans y intégrer de fichiers de production.

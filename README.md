@@ -18,6 +18,7 @@ Je privilégie les **retours d'expérience concrets**, les exemples compréhensi
 | [Authentik et IAM](projects/identity-access/README.md) | OIDC et Forward Auth pour des accès d'administration |
 | [Arcane](projects/docker-management/README.md) | Administration de plusieurs environnements Docker depuis un seul outil |
 | [Stockage et résilience](projects/storage-reliability/README.md) | ZFS, redondance, arrêt propre, retour sur une alerte |
+| [Automatisation Windows](projects/windows-endpoint-automation/README.md) | PXE, Unattended, PowerShell, Chocolatey, Salt et maintenance des logiciels Windows |
 
 Les projets décrivent des solutions effectivement utilisées dans mon environnement, **sans revendiquer de tests ou de garanties que je n'ai pas mesurés**.
 
