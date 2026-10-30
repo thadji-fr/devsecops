@@ -1,4 +1,4 @@
-# Modèle anonymisé : deux services, LAPI sur wg0 et logs SWAG RO.
+# Modèle anonymisé : deux services, LAPI sur wg0 et logs Nginx RO.
 # Authentification LAPI / UI, bouncers et acquisitions spécifiques non exportés.
 services:
   crowdsec:
