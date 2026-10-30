@@ -1,5 +1,5 @@
 # Modèle anonymisé du triplet Guacamole / MariaDB / guacd.
-# Ports hôte en loopback : SWAG peut utiliser les noms Docker en direct.
+# Ports hôte en loopback : Nginx peut utiliser les noms Docker en direct.
 # Le schéma SQL de Guacamole doit être initialisé avant premier usage.
 services:
   guacamole:
