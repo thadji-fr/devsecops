@@ -29,7 +29,7 @@ Les fichiers `.subdomain.conf` sont chargés par l'include Nginx sous `http {}`,
 
 ## Tests de syntaxe et de circulation (laboratoire)
 
-Les fragments de ce dossier sont assemblés **sans les modifier dans Git** dans un répertoire temporaire, avec un certificat autosigné et des includes de test. Puis la CI lance `nginx -t` et un test de chemin **HTTP(S), TCP et UDP**, avec des backends émulés en `127.0.0.1`. La configuration de test remplace uniquement en mémoire les adresses d'exemple et les ports pour éviter tout accès à une machine réelle.
+Les fragments de ce dossier sont assemblés **sans les modifier dans Git** dans un répertoire temporaire, avec un certificat autosigné et des includes de test. Puis la CI lance `nginx -t` et un test de chemin **HTTP(S), TCP et UDP**, avec des backends émulés en `127.0.0.1`. La configuration de test remplace dans les copies temporaires les adresses d'exemple et les ports pour éviter tout accès à une machine réelle.
 
 ```bash
 python3 scripts/test-nginx-examples.py --smoke

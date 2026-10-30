@@ -1,5 +1,7 @@
 # DevSecOps — Linux, Infrastructure & Sécurité
 
+[![Validation publique](https://github.com/thadji-fr/devsecops/actions/workflows/public-check.yml/badge.svg)](https://github.com/thadji-fr/devsecops/actions/workflows/public-check.yml)
+
 **Portfolio technique · Administration Linux · Réseau · Docker · Sécurité · DevOps**
 
 J'utilise ce dépôt pour documenter les **systèmes que j'administre**, les choix techniques que j'ai faits et ce que j'apprends au fil des projets. Malgré son nom, il ne se limite pas au DevSecOps : il couvre aussi l'exploitation Linux, les réseaux, la conteneurisation, le stockage et l'automatisation.

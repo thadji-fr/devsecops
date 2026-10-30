@@ -27,6 +27,8 @@ La validation automatisée du dépôt comporte désormais :
 4. **`nginx -t` sur les fragments du dépôt**, chargés dans une configuration temporaire. Les certificats sont autosignés et les includes absents sont remplacés **uniquement pendant le test** par des doublures clairement identifiées.
 5. **Tests de chemin HTTP(S), TCP et UDP en local**, via des backends simulés en `127.0.0.1` et des ports élevés. Les scripts substituent temporairement les adresses réservées à la documentation ; les fichiers du dépôt ne sont pas réécrits.
 
+**Premier résultat GitHub Actions vérifié (30 octobre 2026) :** la résolution des Compose, `nginx -t` et les tests de chemin HTTP(S), TCP et UDP de laboratoire ont tous réussi. [Voir l'exécution et ses journaux](https://github.com/thadji-fr/devsecops/actions/runs/41027757756). Un succès de CI porte sur les **exemples reconstruits**, pas sur l'accessibilité des services réels ni sur les politiques de sécurité du VPS.
+
 Le script principal se lance sur un hôte de test avec Nginx, OpenSSL et le module Stream :
 
 ```bash
