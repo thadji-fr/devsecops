@@ -1,6 +1,6 @@
 # Modèle anonymisé : manager sur WireGuard + socket Docker RW.
 # Port d'administration non publié sur toutes les interfaces.
-# Authentik (Forward Auth et policies) est défini dans SWAG/Authentik, PAS ici.
+# Authentik (Forward Auth et policies) est défini dans Nginx/Authentik, PAS ici.
 services:
   arcane:
     image: ghcr.io/getarcaneapp/manager:v2
