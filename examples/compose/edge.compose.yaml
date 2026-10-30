@@ -1,4 +1,4 @@
-# Modèle anonymisé : disposition SWAG relevée sur un VPS frontal.
+# Modèle anonymisé : disposition Nginx relevée sur un VPS frontal.
 # Ports standard représentatifs d'une pile Web + Mailcow + TeamSpeak.
 # Ne contient ni certificats, ni domaine, ni DOCKER_MODS réels.
 services:
