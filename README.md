@@ -4,7 +4,7 @@
 
 J'utilise ce dépôt pour documenter les **systèmes que j'administre**, les choix techniques que j'ai faits et ce que j'apprends au fil des projets. Malgré son nom, il ne se limite pas au DevSecOps : il couvre aussi l'exploitation Linux, les réseaux, la conteneurisation, le stockage et l'automatisation.
 
-Je privilégie les **retours d'expérience concrets**, les exemples compréhensibles et les limites clairement expliquées. Ce dépôt ne contient **ni mes fichiers de production ni la topologie exacte de mon infrastructure**. Les configurations proposées sont des **reconstructions détaillées et anonymisées**, fondées sur mes choix de déploiement réels (SWAG, WireGuard, CrowdSec, Guacamole, Arcane). Elles ne remplacent ni les fichiers de production ni les tests.
+Je privilégie les **retours d'expérience concrets**, les exemples compréhensibles et les limites clairement expliquées. Ce dépôt ne contient **ni mes fichiers de production ni la topologie exacte de mon infrastructure**. Les configurations proposées sont des **reconstructions détaillées et anonymisées**, fondées sur mes choix de déploiement réels (Nginx, WireGuard, CrowdSec, Guacamole, Arcane). Elles ne remplacent ni les fichiers de production ni les tests.
 
 ## Projets et retours d'expérience
 
