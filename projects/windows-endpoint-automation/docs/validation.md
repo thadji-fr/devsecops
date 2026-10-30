@@ -10,7 +10,8 @@
 | Chocolatey | Commandes et noms de paquets présents | Versions Chocolatey, résultat, gestion des codes 3010 |
 | Pilotes | Extraction et dpinst64 observés | Signature et compatibilité du pilote de test |
 | Packaging MSI générique | Exemple fictif documentant le principe d'un package personnalisé | MSI de laboratoire autorisé, SHA-256 et test d'installation |
-| Salt | Utilisation décrite par l'auteur | Validation de l'état Salt, ciblage et retours |
+| Salt Minion | Commande d'installation dans les scripts Windows 11 | Vérification de la connexion au Master, de la clé et de l'état du service |
+| Administration Salt Master | Usage décrit par l'auteur, pas de commandes Master d'origine | Ciblage, droits, exécution distante et retours sur minions de laboratoire |
 | Sécurité | Audit statique des éléments à publier | Revue de licence et validation d'autorisation de partage |
 
 **Statut :** documentation et code reconstruits, non vérifiés en exécution. Ne pas présenter les exemples comme une installation PXE de bout en bout prête à déployer.
