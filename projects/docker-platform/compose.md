@@ -6,7 +6,7 @@ J'utilise Compose pour garder des stacks lisibles et reproductibles. Trois notio
 2. **Réseau Docker** : permet aux services du même réseau de communiquer via leur nom et leur port interne.
 3. **Publication d'un port** : ouvre un accès depuis l'hôte vers un conteneur, éventuellement lié à une adresse précise de l'hôte.
 
-Dans mon infrastructure, SWAG peut donc atteindre un service **par son nom sur le réseau Docker** même lorsque le port de celui-ci n'est publié que sur `127.0.0.1` côté hôte. Ce choix simplifie les configurations, mais ne crée **pas** de segmentation entre conteneurs d'un même réseau.
+Dans mon infrastructure, Nginx peut donc atteindre un service **par son nom sur le réseau Docker** même lorsque le port de celui-ci n'est publié que sur `127.0.0.1` côté hôte. Ce choix simplifie les configurations, mais ne crée **pas** de segmentation entre conteneurs d'un même réseau.
 
 Je préfère aussi utiliser des montages de journaux **en lecture seule** lorsqu'un composant doit lire les logs d'un autre sans avoir à les modifier. C'est un principe de réduction des droits, pas une preuve que la sécurité est complète.
 
