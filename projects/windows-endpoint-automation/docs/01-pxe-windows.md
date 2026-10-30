@@ -19,6 +19,8 @@ flowchart TD
     G --> H["RunOnce et redémarrage"]
     H --> I["Seconde vague : logiciels, agents et pilotes"]
     I --> J["Poste préparé, vérifications et journaux"]
+    I --> K["Salt Minion installé sur le poste"]
+    K -.-> L["Administration distante ultérieure par Salt Master"]
 ```
 
 **Séparation essentielle :** ce n'est pas Unattended qui « télécharge tous les paquets ». Unattended configure Windows Setup et peut ordonner l'exécution de commandes. Les scripts prennent ensuite en charge les accès aux ressources, le dépôt Chocolatey et l'installation logicielle.
@@ -60,9 +62,9 @@ La connexion peut impliquer des ressources réseau et une source Chocolatey conf
 
 Le [script de source reconstitué](../windows-deployment/batch/repository-example.cmd) n'utilise qu'une URL fictive en `.invalid`, sans conserver le serveur ni les identifiants d'origine.
 
-Le déploiement de logiciels s'effectuait en plusieurs passes : applications courantes, puis logiciels complémentaires, agents et pilotes. Les journaux répartis par étape permettent de comprendre une installation incomplète.
+Le déploiement de logiciels s'effectuait en plusieurs passes : applications courantes, puis logiciels complémentaires, agents et pilotes. **Salt Minion était lui-même installé dans la seconde vague avec Chocolatey**. Les journaux répartis par étape permettent de comprendre une installation incomplète.
 
-**La chaîne met en place les logiciels et certaines versions attendues au moment du déploiement initial.** La correction des CVE et les mises à jour centralisées **ultérieures** avec Salt correspondent à un autre cycle de maintenance, décrit dans [l'étude de cas dédiée](02-chocolatey-salt-cve.md). Il ne faut pas attribuer automatiquement à Unattended une fonction de veille CVE ou de déploiement continu.
+**Pendant le déploiement initial, Chocolatey installe les logiciels voulus sur le poste depuis le dépôt interne configuré.** Les scripts Windows 11 contiennent également une commande d'installation de **Salt Minion**, pour que le poste puisse ensuite être administré à distance depuis un Salt Master. Salt sert à cibler plusieurs postes, lancer des commandes ou scripts, gérer des états et récupérer les résultats. Il peut **aussi** déclencher des mises à jour logicielles, y compris en appelant Chocolatey, mais son rôle ne se limite ni aux correctifs ni aux CVE. Voir [l'étude de cas dédiée à Salt et Chocolatey](02-salt-chocolatey-administration.md).
 
 ## 5. Redémarrages, profils et dépendances
 
