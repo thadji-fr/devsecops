@@ -137,7 +137,7 @@ class HTTPBackend(BaseHTTPRequestHandler):
 def tcp_echo(stop):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as srv:
         srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        srv.bind(("127.0.0.1", 21025))
+        srv.bind(("127.0.0.1", 31025))
         srv.listen(4)
         srv.settimeout(0.2)
         while not stop.is_set():

@@ -54,6 +54,7 @@ blocks = re.findall(r"\bserver\s*\{[^{}]*\}", mail_stream)
 smtp = [b for b in blocks if re.search(r"\blisten\s+25\s*;", b)]
 assert len(smtp) == 1, "SMTP stream block missing or duplicated"
 assert re.search(r"\bproxy_protocol\s+on\s*;", smtp[0]), "SMTP must emit PROXY protocol"
+assert re.search(r"\bupstream\s+mail_smtp\s*\{\s*server\s+192\.0\.2\.10:10025\s*;", mail_stream), "SMTP example must use Mailcow-compatible 10025"
 assert not re.search(r"\blisten\s+25\s+proxy_protocol\b", smtp[0]), "SMTP must not expect incoming PROXY protocol"
 assert not any(re.search(r"\bproxy_protocol\s+on\s*;", b) for b in blocks if b not in smtp), "PROXY protocol not verified on other mail streams"
 print("OK : réseau externe, bind mounts, WireGuard/localhost, montages Nginx/CrowdSec, ports HTTP/Stream")
