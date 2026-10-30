@@ -2,12 +2,12 @@
 
 Je publie ici des **reconstructions anonymisées de la structure que j'exploite**, et non de petits extraits indépendants recopiés d'un tutoriel.
 
-Le **périmètre technique** est fondé sur mes inventaires : frontal SWAG, relais mail/vocal dans Nginx Stream, CrowdSec LAPI + Web UI, Guacamole/MariaDB/guacd, Arcane + socket Docker, **un réseau externe partagé** et des services distants joints par WireGuard. Les paramètres applicatifs impossibles à vérifier sans lire mes fichiers réels ne sont **pas présentés comme exacts**.
+Le **périmètre technique** est fondé sur mes inventaires : frontal Nginx, relais mail/vocal dans Nginx Stream, CrowdSec LAPI + Web UI, Guacamole/MariaDB/guacd, Arcane + socket Docker, **un réseau externe partagé** et des services distants joints par WireGuard. Les paramètres applicatifs impossibles à vérifier sans lire mes fichiers réels ne sont **pas présentés comme exacts**.
 
 ## Configuration détaillée
 
 - [Mode d'emploi, topologie et limites des Compose](compose/README.md)
-- [SWAG — frontal HTTP(S) et Stream TCP/UDP](compose/edge.compose.yaml)
+- [Nginx — frontal HTTP(S) et Stream TCP/UDP](compose/edge.compose.yaml)
 - [CrowdSec — LAPI, interface Web et logs Nginx RO](compose/crowdsec.compose.yaml)
 - [Guacamole — application, MariaDB et guacd](compose/guacamole.compose.yaml)
 - [Arcane — manager Docker, socket et projets Compose](compose/arcane.compose.yaml)
