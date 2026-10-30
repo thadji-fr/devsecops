@@ -1,55 +1,58 @@
 # Windows Endpoint Automation
 
-**Portfolio technique — PXE · Windows Setup · Unattended · Batch/PowerShell · Chocolatey · Salt**
+**Retour d'expérience technique — PXE · Unattended · Batch/PowerShell · Chocolatey · Salt**
 
-Ce projet documente mes contributions à la **maintenance et à l'évolution d'une chaîne de déploiement Windows** et au maintien des logiciels installés. L'angle est celui du retour d'expérience : comprendre une chaîne existante, l'adapter et en mesurer les limites, plutôt que proposer un tutoriel de déploiement à partir de zéro.
+Ce portfolio présente deux fonctions **complémentaires mais différentes** :
 
-Le code est **reconstruit à partir des mécanismes réellement observés** dans les archives de scripts, les fichiers Unattended et les mécanismes de distribution logicielle. Il ne représente ni les fichiers de production ni une infrastructure autonome exécutable.
+1. **Déploiement automatisé Windows :** démarrage PXE, Windows Setup piloté par Unattended, enchaînement de scripts Batch/PowerShell, configuration du dépôt Chocolatey interne et **installation des logiciels prévus sur les postes**.
+2. **Administration à distance après déploiement :** installation de Salt Minion sur les machines Windows, puis possibilité de les piloter depuis Salt Master (ciblage, commandes CMD/PowerShell, collecte de résultats, contrôle de services, états de configuration). **Salt peut aussi déclencher des mises à jour**, dont des commandes Chocolatey, mais ne se limite pas à celles-ci.
 
-## Ce que la chaîne impliquait
+Les deux produits n'ont pas le même rôle : **Chocolatey installe, met à niveau et désinstalle des paquets Windows ; Salt orchestre des actions à distance sur un ou plusieurs postes.**
+
+## Chaîne technique
 
 ```mermaid
 flowchart TD
-    A[Poste UEFI] --> B[Amorçage PXE]
-    B --> C[Windows Setup + Unattended XML]
-    C --> D[SetupComplete / scripts locaux]
-    D --> E[Etape 1 : logiciels de base]
-    E --> F[RunOnce / changement de session]
-    F --> G[Etape 2 : outils, agents et pilotes]
-    G --> H[Contrôle de l'état final]
-    I[Maintenance de paquets] --> J[Chocolatey]
-    J --> E
-    J --> G
-    K[Corrections de CVE] --> L[Salt / diffusion des mises à jour]
-    L --> H
+    PXE[Amorçage réseau PXE] --> SETUP[Windows Setup / Unattended]
+    SETUP --> SCRIPT[Batch / PowerShell et phases RunOnce]
+    SCRIPT --> CHOCO[Chocolatey sur le poste]
+    DEPOT[Dépôt interne de paquets] --> CHOCO
+    CHOCO --> APPS[Logiciels installés]
+    SCRIPT --> MINION[Installation de Salt Minion]
+    MINION --> POSTE[Poste Windows prêt]
+    APPS --> POSTE
+    MASTER[Salt Master] -->|Ciblage, commandes, scripts, états| MINION
+    MINION -->|Retours| MASTER
+    MASTER -.->|Peut commander une mise à jour via Chocolatey| CHOCO
 ```
 
-L'infrastructure PXE et les états Salt exacts ne figurent pas dans les archives mises à disposition : leur représentation ici est fonctionnelle. Les éléments Windows sont mieux documentés.
+Le chemin entre Salt Master et Salt Minion représente les possibilités du logiciel et non la topologie exacte du réseau historique. La configuration originale du serveur PXE et du Salt Master n'a pas été fournie.
 
-## Retours d'expérience
+## Études de cas
 
-| Sujet | Contenu technique et preuves publiques |
-|---|---|
-| **01. PXE et préparation Windows** | [Étude de cas détaillée](docs/01-pxe-windows.md), [XML UEFI](windows-deployment/unattended/uefi-example.xml), [scripts multi-étapes](windows-deployment/batch/) |
-| **02. Chocolatey / Salt / CVE** | [Gestion des correctifs](docs/02-chocolatey-salt-cve.md), [état Salt illustratif](salt/states/browser-update.sls) |
-| **03. Packaging MSI anonymisé** | [Étude de cas](docs/03-chocolatey-custom-package.md), [exemple fictif de paquet](chocolatey/msi-package-example/) |
+| Sujet | Documentation et code |
+| --- | --- |
+| **01 — Déploiement Windows automatisé** | [Analyse PXE / Unattended](docs/01-pxe-windows.md) · [XML UEFI anonymisé](windows-deployment/unattended/uefi-example.xml) · [scripts en plusieurs phases](windows-deployment/batch/) |
+| **02 — Administration Windows à distance et maintenance logicielle** | [Salt et Chocolatey : rôles complémentaires](docs/02-salt-chocolatey-administration.md) · [Exécution Salt](salt/remote-execution.md) · [État Salt illustratif](salt/states/browser-update.sls) |
+| **03 — Packaging Chocolatey personnalisé** | [Packaging MSI anonymisé](docs/03-chocolatey-custom-package.md) · [paquet fictif](chocolatey/msi-package-example/) |
 
-## Détails techniques représentés
+L'[ancienne page 02](docs/02-chocolatey-salt-cve.md) redirige vers le nouveau contenu, afin de préserver les liens historiques.
 
-- Modèle UEFI/GPT observé avec **WinRE 650 Mio, EFI 100 Mio, MSR 16 Mio et volume Windows étendu**. Le XML publié est incomplet pour un déploiement réel et contient une instruction destructive de partitionnement : **ne pas l'utiliser sur une machine contenant des données**.
-- Enchaînement **SetupComplete → scripts Batch → installation Chocolatey → RunOnce → deuxième vague**, avec des états et des journaux pour la version de démonstration.
-- Installation de logiciels standards, profils applicatifs conditionnels et point d'intégration de pilotes via un utilitaire Windows. Le ciblage réseau des postes est remplacé par un profil explicite.
-- Illustration de packaging MSI générique : manifeste NuGet, vérification du binaire, installation silencieuse et codes retour.
-- Remédiation des mises à jour avec Chocolatey/Salt documentée séparément ; exemple Salt fictif, non issu des états réels.
+## Ce qui est observable dans les scripts fournis
 
-## Pourquoi ces fichiers diffèrent de l'original
+- Fichiers Unattended avec différentes passes Windows Setup et des modèles de partitionnement UEFI.
+- Scripts Windows 11 : `chocolatey.cmd`, `repository.cmd`, `installpackages.cmd` et `installpackages_2.cmd` pour préparer le gestionnaire de paquets et installer des logiciels.
+- Deux vagues d'installation, plusieurs redémarrages, `RunOnce`, adaptation de logiciels selon le profil et installation de pilotes.
+- **Installation de Salt Minion via Chocolatey**, dans la deuxième phase de préparation du poste, avant son utilisation pour l'administration distante.
 
-**Anonymiser sans appauvrir** implique de préserver les mécanismes utiles tout en excluant les secrets, topologies, codes sous licence, binaires et manipulations historiques présentant des risques. La [matrice source → reconstruction](docs/original-vs-public.md) décrit les écarts : suppression des connexions automatiques, des contournements de protections et des chemins réseau, sans masquer l'existence de ces contraintes.
+## Limites, anonymisation et validation
 
-La [matrice de validation](docs/validation.md) distingue ce qui est observé dans les sources, ce qui est reconstitué et ce qui reste à tester. Le dépôt **n'est pas un kit de déploiement PXE prêt à lancer**.
+Les fichiers du dépôt sont **reconstruits et anonymisés** : pas de chemins réseau, d'adresses IP, de binaires propriétaires, de noms de postes, de mots de passe ou de données de production.
 
-## Publication et sécurité
+Les archives ne comprennent pas les commandes historiques du **Salt Master** : les commandes distantes publiées sont **des exemples techniques de laboratoire**, pas la transcription d'interventions spécifiques. Les versions exactes, le nombre de postes, le ciblage et les résultats historiques ne sont pas attestés.
 
-Aucun MSI original, nom de machine, domaine, IP, identifiant ou mot de passe n'est destiné à être publié. Les noms de logiciels connus restent cités pour leur intérêt technique, pas pour dévoiler une infrastructure. Voir [SECURITY.md](SECURITY.md).
+Le XML d'exemple contient une opération d'effacement du disque cible : **ne pas l'appliquer sur une machine comportant des données**. Le code illustratif n'est pas un système PXE prêt pour la production.
 
-Les articles de synthèse et les captures de laboratoire seront publiés sur [thadji.fr](https://thadji.fr), avec liens vers les exemples concernés.
+Voir [validation](docs/validation.md), [traçabilité des reconstructions](docs/original-vs-public.md) et [sécurité](SECURITY.md).
+
+Retours d'expérience publiés sur [thadji.fr](https://thadji.fr).
