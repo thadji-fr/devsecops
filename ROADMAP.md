@@ -16,7 +16,7 @@ Les détails d'exploitation restent privés ; voir les [projets](projects/README
 - Contrôle automatique des secrets évidents, YAML, liens logiques entre montages et ports.
 - Résolution des modèles Compose sans lancement de conteneurs.
 - Validation `nginx -t` sur des fragments anonymisés, puis tests HTTP(S), TCP et UDP **sur des backends simulés en localhost** ([premier run réussi](https://github.com/thadji-fr/devsecops/actions/runs/41027757756)). Ce n'est pas une preuve de routage WireGuard ou de protection du VPS.
-- Matrice de preuves : [Nginx / WireGuard / CrowdSec](projects/network-edge/validation.md).
+- Matrice de preuves : [Nginx / WireGuard / CrowdSec](projects/network-edge/validation.md), enrichie par un relevé passif de la configuration effectivement chargée sur le frontal. L'emplacement exact de PROXY protocol reste à confirmer.
 
 ## Qualité d'exploitation à approfondir
 

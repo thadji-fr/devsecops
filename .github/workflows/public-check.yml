@@ -24,6 +24,8 @@ jobs:
           PY
       - name: Cohérence des stacks Compose et des ports Nginx Stream
         run: python3 scripts/check-example-topology.py
+      - name: Tester le lecteur Nginx anonymisé sur des données synthétiques
+        run: python3 scripts/test-audit-nginx-flags-safe.py
       - name: Vérifier la résolution des quatre Compose sans les démarrer
         env:
           GUAC_DB_PASSWORD: ci

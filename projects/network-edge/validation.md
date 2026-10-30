@@ -15,6 +15,14 @@ Les contrôles suivants proviennent d'un inventaire réalisé sur le VPS frontal
 | Journaux Nginx → CrowdSec | Comparaison locale confirmant que le montage en lecture seule de CrowdSec pointe sur le sous-dossier `log/nginx` du volume Nginx. | Que chaque type d'événement soit correctement parsé. |
 | CrowdSec | Des métriques de collecte, alertes d'un agent distant et rejets côté Nginx/pare-feu ont été relevés. | Que toutes les décisions ou tous les bouncers fonctionnent à cet instant. |
 
+### Vérification complémentaire de la configuration chargée — 30 octobre 2026
+
+Un contrôle **en lecture seule** avec `nginx -T` sur le conteneur de frontal a confirmé que l'ensemble de la configuration était accepté par Nginx. Les fichiers de proxy HTTP et de relais Stream ont été détectés, ainsi que les directives d'écoute correspondant aux protocoles documentés. Le script de comparaison utilisé n'a pas signalé d'écoute supplémentaire dans son périmètre d'analyse.
+
+Le même relevé détecte des références à **Authentik, CrowdSec, Real IP et PROXY protocol** dans les fichiers chargés. Cela établit leur **présence structurelle**, pas leur efficacité ni leur placement exact sur les routes. En particulier, l'usage de **PROXY protocol sur le relais SMTP** n'a pas encore été déterminé. Les nombreuses directives `proxy_pass` à variables ne doivent pas être interprétées comme autant de services indépendants.
+
+Pour approfondir ce point sans afficher les valeurs sensibles, j'ai ajouté le script [`scripts/audit-nginx-flags-safe.py`](../../scripts/audit-nginx-flags-safe.py). Il inspecte `nginx -T` en mémoire et n'imprime que des indicateurs prédéfinis `OUI`, `NON` ou `INDÉTERMINÉ`. Il ne vérifie pas la pertinence des règles d'accès et n'effectue aucune requête réseau vers les backends.
+
 Les captures d'écran brutes, IP WireGuard, compteurs détaillés, adresses d'administration et chemins sources restent **hors du dépôt public**.
 
 ## 2. Tests reproductibles sur les exemples PUBLICS
@@ -48,7 +56,7 @@ python3 scripts/test-nginx-examples.py --http-only
 | Cas | Méthode attendue | Preuve publique possible | État |
 |---|---|---|---|
 | Parcours client → Nginx → service HTTP distant | Test depuis un client autorisé avec réponse applicative connue | Résultat positif/négatif anonymisé | À confirmer |
-| Relais TCP messagerie | Vérifier la négociation de protocole sur un service autorisé, sans envoyer de données personnelles | Succès/échec, sans noms d'hôte ni IP | À confirmer |
+| Relais TCP messagerie | Vérifier d'abord la direction de PROXY protocol (entrant/sortant) sur le relais SMTP, puis la négociation sur un service autorisé | Résultat anonymisé, sans noms d'hôte ni IP | Structure en cours d'audit ; chemin complet à confirmer |
 | Relais UDP vocal | Test UDP adapté au protocole avec un client prévu à cet effet | Succès/échec, sans endpoints | À confirmer |
 | Politique réseau WireGuard | Essais autorisés puis refusés entre hôtes, et vérification des règles sur les deux extrémités | Matrice de résultats sans règles ni adresses | À confirmer |
 | Accès direct à l'origine / IPv6 | Essais depuis un réseau externe contrôlé, pour vérifier le refus de contournement du frontal | Résultat du test et remédiation | À confirmer |

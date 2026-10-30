@@ -41,6 +41,16 @@ Le script est lancé depuis la racine du dépôt avec Nginx, OpenSSL et le modul
 
 → [Matrice des preuves réelles et des contrôles encore ouverts](../../projects/network-edge/validation.md).
 
+## Audit passif de la configuration réelle
+
+Pour comparer les *familles de directives chargées* à celles des exemples, je peux exécuter le script [`audit-nginx-flags-safe.py`](../../scripts/audit-nginx-flags-safe.py) **sur le serveur concerné**. Il récupère la sortie de `nginx -T` en mémoire, sans la publier, et imprime uniquement une liste fermée de `OUI`/`NON`/`INDÉTERMINÉ`.
+
+```bash
+python3 scripts/audit-nginx-flags-safe.py
+```
+
+Les résultats incluent notamment la distinction entre **PROXY protocol entrant** (`listen ... proxy_protocol`) et **sortant** (`proxy_protocol on;`) dans les fichiers de relais Stream, y compris sur le bloc SMTP lorsqu'il peut être identifié. Cela **ne prouve pas** que le backend accepte PROXY protocol. La lecture est strictement passive, sans rechargement ni modification de service. Contrôler le script avant son exécution.
+
 ## Limites et contrôles
 
 1. Les destinations `192.0.2.10` sont **non routables pour ton VPN** : remplace-les dans un banc de test par les vraies adresses de ce banc, jamais dans ce dépôt public.
