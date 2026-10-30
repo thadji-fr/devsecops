@@ -3,7 +3,7 @@
 Ce dossier modélise des stacks **séparées**, comme celles relevées dans mon inventaire. Chacune est indépendante côté Compose, mais les conteneurs rejoignent le **même réseau externe** (`example-edge`). Ce réseau remplace le vrai nom utilisé en production.
 
 ```text
-             VPS frontal (SWAG/Nginx)
+             VPS frontal (Nginx)
                  │          │
          Réseau Docker      Tunnel WireGuard
           example-edge      vers serveurs distants
@@ -16,7 +16,7 @@ Ce dossier modélise des stacks **séparées**, comme celles relevées dans mon 
 
 | Projet | Ports hôte dans le modèle | Volumes essentiels |
 |---|---|---|
-| [SWAG](edge.compose.yaml) | Web, courrier TCP, voix TCP/UDP | `/config` RW |
+| [Nginx](edge.compose.yaml) | Web, courrier TCP, voix TCP/UDP | `/config` RW |
 | [CrowdSec](crowdsec.compose.yaml) | `8080`, `3000` sur adresse WireGuard (loopback par défaut dans `.env.example`) | `/var/log/nginx` **RO**, config/data RW |
 | [Guacamole](guacamole.compose.yaml) | `8085`, `3306`, `4822` sur loopback | enregistrements RO/RW, DB RW, drive RW |
 | [Arcane](arcane.compose.yaml) | `3552` sur adresse WireGuard (loopback par défaut dans `.env.example`) | socket Docker RW, data RW, projets RW |
@@ -29,11 +29,11 @@ Ce dossier modélise des stacks **séparées**, comme celles relevées dans mon 
 
 ### Cohérence des montages et des chemins
 
-Le **même chemin fictif** `STACK_ROOT/swag/log/nginx` est utilisé par SWAG (sous `/config`) et CrowdSec (monté RO sous `/var/log/nginx`). Dans mon audit, j'ai vérifié cette relation entre dossiers sans publier les chemins réels. Pour Guacamole, le modèle utilise un chemin d'enregistrements commun entre guacd (RW) et l'application (RO) ; ce point **n'a pas encore été vérifié sur la configuration réelle**.
+Le **même chemin fictif** `STACK_ROOT/swag/log/nginx` est utilisé par le conteneur Nginx (sous `/config`) et CrowdSec (monté RO sous `/var/log/nginx`). Dans mon audit, j'ai vérifié cette relation entre dossiers sans publier les chemins réels. Pour Guacamole, le modèle utilise un chemin d'enregistrements commun entre guacd (RW) et l'application (RO) ; ce point **n'a pas encore été vérifié sur la configuration réelle**.
 
 ### Authentik et Arcane
 
-Arcane me permet de centraliser la gestion de plusieurs environnements Docker (conteneurs, projets Compose, réseaux, volumes, images, journaux et console). J'ai placé son accès Web derrière **SWAG avec Forward Auth**, et **Authentik décide des autorisations par politique**, réservées à mon compte selon ma configuration. Le fichier Compose **ne contient pas** les providers, secrets ou règles Authentik. Voir [le reverse proxy anonymisé](../nginx/arcane-authentik.subdomain.conf).
+Arcane me permet de centraliser la gestion de plusieurs environnements Docker (conteneurs, projets Compose, réseaux, volumes, images, journaux et console). J'ai placé son accès Web derrière **Nginx avec Forward Auth**, et **Authentik décide des autorisations par politique**, réservées à mon compte selon ma configuration. Le fichier Compose **ne contient pas** les providers, secrets ou règles Authentik. Voir [le reverse proxy anonymisé](../nginx/arcane-authentik.subdomain.conf).
 
 ### Validation sans déployer
 
