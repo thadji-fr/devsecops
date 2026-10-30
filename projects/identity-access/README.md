@@ -1,8 +1,8 @@
 # Authentik, OIDC et Forward Auth sur un outil d'administration
 
-Pour centraliser les accès aux outils sensibles, j'utilise **Authentik**. Dans le cas d'un gestionnaire Docker, je l'ai intégré avec **OIDC** et une couche de **Forward Auth côté SWAG/Nginx**.
+Pour centraliser les accès aux outils sensibles, j'utilise **Authentik**. Dans le cas d'un gestionnaire Docker, je l'ai intégré avec **OIDC** et une couche de **Forward Auth côté Nginx**.
 
-**Point de vocabulaire : les permissions et le contrôle Forward Auth sont configurés dans Authentik.** SWAG interroge le mécanisme d'autorisation avant de laisser passer la requête ; il ne constitue pas à lui seul la source des règles d'accès.
+**Point de vocabulaire : les permissions et le contrôle Forward Auth sont configurés dans Authentik.** Nginx interroge le mécanisme d'autorisation avant de laisser passer la requête ; il ne constitue pas à lui seul la source des règles d'accès.
 
 Dans ma configuration, l'accès est réservé à un compte administrateur autorisé. Les noms de fournisseurs, les règles exactes, les URL d'administration, les identifiants et les paramètres de session ne sont **pas publiés**.
 
@@ -15,4 +15,4 @@ Dans ma configuration, l'accès est réservé à un compte administrateur autori
 
 L'existence d'un écran de connexion ne suffit pas à prouver l'absence de contournement. Je distingue la **configuration déclarée** de sa **validation de bout en bout**.
 
-→ [Gestion centralisée avec Arcane](../docker-management/README.md) · [Exemple SWAG Forward Auth](../../examples/nginx/arcane-authentik.subdomain.conf)
+→ [Gestion centralisée avec Arcane](../docker-management/README.md) · [Exemple Nginx Forward Auth](../../examples/nginx/arcane-authentik.subdomain.conf)
