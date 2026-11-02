@@ -1,5 +1,7 @@
 # PXE Boot et Windows : maintenance d'une chaîne de déploiement automatisé
 
+**Article associé :** [PXE Boot et Windows : maintenance et automatisation d'une chaîne de déploiement](https://thadji.fr/pxe-boot-et-windows-maintenance-et-evolution-dune-chaine-de-deploiement-automatise/). La version WordPress privilégie le récit de maintenance et les transitions entre phases, tandis que ce dépôt fournit les reconstructions anonymisées et les limites de validation.
+
 **Retour d'expérience technique** — Ce dossier présente mes interventions sur les mécanismes de préparation des postes Windows. Il accompagne l'article de thadji.fr et **ne constitue pas un tutoriel**. Les exemples de code publiés sont des reconstructions anonymisées.
 
 ## 1. Le véritable périmètre : du démarrage réseau à la préparation logicielle
