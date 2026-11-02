@@ -61,6 +61,18 @@ python3 scripts/audit-nginx-mailcow-routes-safe.py
 
 Il faut le lancer **sur le frontal Nginx**, pas sur le serveur Postfix. Le script ne modifie aucun fichier ni service. Il ne sait pas reconstituer une éventuelle redirection de port par Docker ou un relais intermédiaire. `NON` ne constitue donc pas, seul, une preuve de panne ou une justification de modification en production.
 
+## CrowdSec, Cloudflare et l'IP réelle des visiteurs
+
+L'article [**CrowdSec et Nginx : détecter et bloquer les attaques Web**](https://thadji.fr/crowdsec-nginx-swag-npm/) est documenté côté dépôt dans [**l'étude de cas Nginx / CrowdSec**](../../projects/crowdsec/nginx-reverse-proxy.md).
+
+Cette installation s'appuie sur **Nginx** ; SWAG n'est que l'image Docker Nginx utilisée (certificats automatiques et modules complémentaires). Le nom `swag` dans les commandes est le nom de ce conteneur.
+
+La configuration publique de ce dossier **n'intègre pas les réglages du bouncer Lua ni la liste de confiance Cloudflare** : cela ne signifie pas que CrowdSec est installé ou que les IP clientes sont restaurées par ces fragments. En exploitation, la confiance accordée à `CF-Connecting-IP` doit être limitée aux plages Cloudflare officielles, pour les flux qui arrivent effectivement depuis leurs relais.
+
+Pour les domaines Cloudflare proxifiés, un bouncer HTTP intégré à Nginx peut utiliser l'IP visiteur restaurée ; un bouncer firewall sur l'hôte traite les **IP sources réseau** observables (généralement celles des relais Cloudflare pour ces flux). Les sites DNS-only et les services TCP/UDP sont à vérifier sur leur propre chemin réseau.
+
+Un `nginx -t` réussi ou la présence de directives CrowdSec dans `nginx -T` ne démontrent pas un bannissement HTTP réel. Une preuve de remédiation exige un test depuis un client contrôlé, avec décision temporaire, observation de la réponse et nettoyage du test.
+
 ## Limites et contrôles
 
 1. Les destinations `192.0.2.10` sont **non routables pour ton VPN** : remplace-les dans un banc de test par les vraies adresses de ce banc, jamais dans ce dépôt public.
