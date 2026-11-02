@@ -34,4 +34,4 @@ Pour un service hébergé **localement sur le VPS**, Nginx peut utiliser le **DN
 
 J'ai séparé les **preuves observées sur l'infrastructure** des **tests exécutés sur les exemples publics** : la syntaxe seule ne prouve pas le routage réel ni le filtrage.
 
-→ **[WireGuard : VPS et serveur Linux on-premises](wireguard-vps-onprem.md)** · **[Matrice de vérification et tests reproductibles](validation.md)** · [Nginx : HTTP + Stream multi-protocole anonymisés](../../examples/nginx/README.md) · [Sécurité de publication](../../docs/publication-policy.md)
+→ **[WireGuard : VPS et serveur Linux on-premises](wireguard-vps-onprem.md)** · **[Nginx Stream : publication TCP/UDP via WireGuard](nginx-stream-wireguard.md)** · **[Matrice de vérification et tests reproductibles](validation.md)** · [Nginx : HTTP + Stream multi-protocole anonymisés](../../examples/nginx/README.md) · [Sécurité de publication](../../docs/publication-policy.md)
