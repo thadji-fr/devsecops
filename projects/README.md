@@ -6,6 +6,7 @@ Chaque dossier décrit **un sujet pratiqué** et ce que j'en ai retiré. Je sép
 |---|---|---|
 | Réseau | VPS frontal, WireGuard et Nginx | [Réseau multi-sites](network-edge/README.md) |
 | Docker | Migration Proxmox → Docker Compose | [Plateforme Docker](docker-platform/README.md) |
+| Virtualisation (historique) | Proxmox VE, OPNsense et IPv4 supplémentaire OVHcloud | [Ancienne architecture Proxmox / OPNsense](proxmox-opnsense-historical/README.md) |
 | Sécurité | CrowdSec et remédiation | [CrowdSec](crowdsec/README.md) |
 | IAM | Authentik, OIDC et Forward Auth | [Contrôle d'accès](identity-access/README.md) |
 | Administration | Arcane et plusieurs environnements Docker | [Administration centralisée](docker-management/README.md) |
