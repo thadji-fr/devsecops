@@ -6,10 +6,12 @@ Les fichiers conservent **l'organisation Nginx de l'infrastructure observée**, 
 |---|---|
 | [`http.conf`](http.conf) | Backend local à Nginx via **DNS Docker + port interne** |
 | [`remote-wireguard.subdomain.conf`](remote-wireguard.subdomain.conf) | Backend HTTP distant via **IP du tunnel + port** (adresse RFC 5737) |
-| [`arcane-authentik.subdomain.conf`](arcane-authentik.subdomain.conf) | Interface d'administration contrôlée par **Forward Auth Authentik via Nginx** |
+| [`arcane-authentik.subdomain.conf`](arcane-authentik.subdomain.conf) | Arcane derrière Authentik, avec **upstream fictif représentant l'IP WireGuard du VPS** |
 | [`stream.conf`](stream.conf) | Bloc `stream` unique dans `nginx.conf` qui charge `stream-confs/*.conf` |
 | [`stream-confs/mail-relay.conf`](stream-confs/mail-relay.conf) | Relais TCP en **passthrough** vers la messagerie ; **en-tête PROXY protocol émis vers l'écoute Postscreen compatible** dans l'exemple |
 | [`stream-confs/voice-relay.conf`](stream-confs/voice-relay.conf) | Relais vocal **UDP + TCP** |
+
+**Arcane :** dans cette installation, Nginx relaie l'interface vers le **port du manager publié sur l'IP WireGuard du VPS**. L'adresse `192.0.2.10` dans l'exemple est une valeur de documentation RFC 5737, pas une véritable IP WireGuard. Comme Nginx et le manager sont sur le même VPS, cette liaison est locale à l'hôte même si elle utilise son IP `wg0`. Les communications **manager → agents distants** passent, elles, par WireGuard. La route depuis le conteneur Nginx vers l'IP de l'hôte et l'absence de contournement du proxy doivent être testées séparément.
 
 ## Arborescence d'installation habituelle (dans le conteneur Nginx)
 
