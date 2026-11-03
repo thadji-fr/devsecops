@@ -29,11 +29,13 @@ flowchart TD
 
 ## Article et exemples techniques
 
-- **[CrowdSec Web UI : supervision et sécurisation de l'interface](web-ui.md)** — retour d'expérience sur la LAPI, les identités techniques, Nginx/Authentik et les limites des preuves.\n- **[Nginx + CrowdSec : intégration et contrôles de sécurité](nginx-reverse-proxy.md)** — étude de cas alignée sur [l'article du blog](https://thadji.fr/crowdsec-nginx-swag-npm/), sans configuration privée.
+- **[CrowdSec Web UI : supervision et sécurisation de l'interface](web-ui.md)** — retour d'expérience sur la LAPI, les identités techniques, Nginx/Authentik et les limites des preuves.
+- **[Nginx + CrowdSec : intégration et contrôles de sécurité](nginx-reverse-proxy.md)** — étude de cas alignée sur [l'article du blog](https://thadji.fr/crowdsec-nginx-swag-npm/), sans configuration privée.
 - [Acquisition anonymisée des logs Nginx](../../examples/crowdsec/acquis.d/nginx.yaml)
 - [Exemple Compose CrowdSec / LAPI / UI](../../examples/compose/crowdsec.compose.yaml)
 - [Fragments de configuration Nginx](../../examples/nginx/README.md)
 - [Matrice des validations et limites](../network-edge/validation.md)
+- [Authentik : journaux, détection brute force et bouncer (cas documenté)](../identity-access/crowdsec-authentik.md)
 
 ## Résultats et prudence sur les preuves
 
