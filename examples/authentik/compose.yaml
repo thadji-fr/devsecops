@@ -1,0 +1,67 @@
+# EXEMPLE ANONYMISE, non deploié et non valide par un demarrage.
+# Secrets stockes hors Git ; ne pas reutiliser ce fichier directement en prod.
+# ATTENTION: le Compose transmis publiait les ports sans bind IP explicite.
+# Ici 127.0.0.1 est un repli de LABORATOIRE. Une autre IP ne convient
+# qu'apres revue du routage VPN, firewall Docker et IPv4/IPv6.
+services:
+  postgresql:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: authentik
+      POSTGRES_USER: authentik
+      POSTGRES_PASSWORD: "${PG_PASS:?required_outside_git}"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U authentik -d authentik"]
+      start_period: 20s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - authentik_pg_data:/var/lib/postgresql/data
+
+  server:
+    image: "ghcr.io/goauthentik/server:${AUTHENTIK_TAG:?supported_version_required}"
+    command: server
+    restart: unless-stopped
+    environment:
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: "${PG_PASS:?required_outside_git}"
+      AUTHENTIK_SECRET_KEY: "${AUTHENTIK_SECRET_KEY:?required_outside_git}"
+    volumes:
+      - authentik_data:/data
+      - authentik_templates:/templates
+    ports:
+      - "${AUTHENTIK_BIND_IP:-127.0.0.1}:9000:9000"
+      - "${AUTHENTIK_BIND_IP:-127.0.0.1}:9443:9443"
+    depends_on:
+      postgresql:
+        condition: service_healthy
+
+  worker:
+    image: "ghcr.io/goauthentik/server:${AUTHENTIK_TAG:?supported_version_required}"
+    command: worker
+    restart: unless-stopped
+    environment:
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: "${PG_PASS:?required_outside_git}"
+      AUTHENTIK_SECRET_KEY: "${AUTHENTIK_SECRET_KEY:?required_outside_git}"
+    volumes:
+      - authentik_data:/data
+      - authentik_templates:/templates
+      - authentik_certs:/certs
+    # Pas de montage Docker socket.
+    # L'usage de root, observe dans le Compose source, est a revoir selon les permissions.
+    depends_on:
+      postgresql:
+        condition: service_healthy
+
+volumes:
+  authentik_pg_data:
+  authentik_data:
+  authentik_templates:
+  authentik_certs:
