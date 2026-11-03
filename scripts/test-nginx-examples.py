@@ -83,7 +83,7 @@ def prepare(work, smoke, http_only):
             staged = staged.replace("listen [::]:443 ssl;", "")
             staged = staged.replace("set $upstream_app uptime-kuma;", "set $upstream_app 127.0.0.1;")
             staged = staged.replace("set $upstream_port 3001;", "set $upstream_port 19001;")
-            staged = staged.replace("set $upstream_app arcane;", "set $upstream_app 127.0.0.1;")
+            staged = staged.replace("set $upstream_app 192.0.2.10;", "set $upstream_app 127.0.0.1;")
             staged = staged.replace("set $upstream_port 3552;", "set $upstream_port 19002;")
             staged = staged.replace("192.0.2.10:8080", "127.0.0.1:19003")
         write(proxy_dir / filename, staged)
@@ -207,7 +207,8 @@ def smoke_test(work, config):
 
         ctx = ssl._create_unverified_context()  # Certificat autosigné du TEST uniquement.
         for name, expected in (("monitoring.example.org", b"local-docker"),
-                               ("remote-app.example.org", b"remote-wireguard")):
+                               ("remote-app.example.org", b"remote-wireguard"),
+                               ("admin.example.org", b"arcane-fixture")):
             conn = http.client.HTTPSConnection("127.0.0.1", 18443, timeout=4, context=ctx)
             try:
                 conn.request("GET", "/", headers={"Host": name})
