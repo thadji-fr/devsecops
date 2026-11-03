@@ -35,7 +35,7 @@ Le dessin est logique, pas une capture de routes ni un export de la topologie. D
 
 La stack Authentik fournie comprend **PostgreSQL**, un service `server` et un `worker` distinct. PostgreSQL possède un healthcheck et les données sont persistées dans des volumes. Le Compose source expose deux ports au niveau de l'hôte sans bind IP explicite : l'accès effectif dépend des routes, du firewall, de Docker et du routeur. **Ne pas en déduire un filtrage WireGuard exclusif.** Le worker fonctionne avec des droits élevés dans la configuration fournie ; le montage du socket Docker y était commenté. Les chemins de templates du serveur et du worker doivent aussi être comparés avant toute modification.
 
-→ [Étude de l'architecture Docker/Nginx et des points de contrôle](architecture-nginx.md)
+→ [Étude de l'architecture Docker/Nginx et des points de contrôle](architecture-nginx.md) · [Compose Authentik anonymisé](../../examples/authentik/compose.yaml)
 
 ## Exemple 1 — Arcane : Forward Auth par application
 
