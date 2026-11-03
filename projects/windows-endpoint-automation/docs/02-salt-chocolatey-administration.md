@@ -1,5 +1,7 @@
 # 02 — Administrer plusieurs postes Windows avec Salt ; maintenir les logiciels avec Chocolatey
 
+**Article du blog :** [Administrer plusieurs postes Windows à distance avec Salt et maintenir les logiciels avec Chocolatey](https://thadji.fr/administrer-plusieurs-postes-windows-a-distance-avec-salt-et-maintenir-les-logiciels-avec-chocolatey/). La version WordPress met l’accent sur le retour d’expérience ; les commandes GitHub demeurent des exemples anonymisés de laboratoire, pas des sorties historiques du Salt Master.
+
 **Retour d'expérience** — Deux fonctions complémentaires, à ne pas confondre : **Chocolatey gère les logiciels et leurs versions**, tandis que **Salt permet l'administration et l'orchestration à distance sur plusieurs postes**.
 
 ## 1. Le point de départ : des postes déjà préparés
