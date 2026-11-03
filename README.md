@@ -21,7 +21,7 @@ Mon VPS sert de point d'entrée pour des services répartis sur plusieurs serveu
 
 ### Sécurité et contrôle des accès
 
-J'utilise **CrowdSec** pour analyser des événements et centraliser les décisions de sécurité. Selon le trafic concerné, les décisions peuvent être appliquées par Nginx ou par un bouncer firewall. Pour les interfaces d'administration, j'utilise également **Authentik** avec OIDC ou Forward Auth.
+J'utilise **CrowdSec** pour analyser des événements et centraliser les décisions de sécurité. Selon le trafic concerné, les décisions peuvent être appliquées par Nginx ou par un bouncer firewall. Pour les accès, j'utilise **Authentik** : OIDC pour Jellyfin, Forward Auth Nginx pour Arcane et des autorisations différentes par application. LDAP reste une possibilité pour les services qui ne prennent pas en charge OIDC.
 
 - [CrowdSec : agents, LAPI et remédiation](projects/crowdsec/README.md)
 - [CrowdSec avec Nginx et Cloudflare](projects/crowdsec/nginx-reverse-proxy.md)
