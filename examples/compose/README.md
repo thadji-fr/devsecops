@@ -19,7 +19,8 @@ Ce dossier modélise des stacks **séparées**, comme celles relevées dans mon 
 | [Nginx](edge.compose.yaml) | Web, courrier TCP, voix TCP/UDP | `/config` RW |
 | [CrowdSec](crowdsec.compose.yaml) | `8080`, `3000` sur adresse WireGuard (loopback par défaut dans `.env.example`) | `/var/log/nginx` **RO**, config/data RW |
 | [Guacamole](guacamole.compose.yaml) | `8085`, `3306`, `4822` sur loopback | enregistrements RO/RW, DB RW, drive RW |
-| [Arcane](arcane.compose.yaml) | `3552` sur adresse WireGuard (loopback par défaut dans `.env.example`) | socket Docker RW, data RW, projets RW |
+| [Arcane Manager](arcane.compose.yaml) | `3552` sur l'IP WireGuard du VPS (repli loopback uniquement pour les tests) | socket Docker RW, data RW, projets RW |
+| [Arcane Agent Direct](arcane-agent.example.yaml) | `3553` sur l'IP WireGuard de chaque serveur distant (aucune IP par défaut) | socket Docker RW sur l'hôte distant, données agent |
 
 ### Trois notions différentes
 
@@ -30,6 +31,14 @@ Ce dossier modélise des stacks **séparées**, comme celles relevées dans mon 
 ### Cohérence des montages et des chemins
 
 Le **même chemin fictif** `STACK_ROOT/swag/log/nginx` est utilisé par le conteneur Nginx (sous `/config`) et CrowdSec (monté RO sous `/var/log/nginx`). Dans mon audit, j'ai vérifié cette relation entre dossiers sans publier les chemins réels. Pour Guacamole, le modèle utilise un chemin d'enregistrements commun entre guacd (RW) et l'application (RO) ; ce point **n'a pas encore été vérifié sur la configuration réelle**.
+
+### Arcane et le réseau WireGuard
+
+Le manager tourne sur le VPS et publie son port sur **l'IP WireGuard de ce VPS** ; chaque agent Direct publie son port sur **l'IP WireGuard de son propre hôte**. Le manager contacte les agents sur leurs adresses VPN. Nginx reçoit le trafic HTTPS public et relaie l'interface du manager vers l'IP WireGuard du VPS. Ce dernier saut est **local au VPS** : il ne constitue pas un tunnel chiffré supplémentaire.
+
+Dans `arcane.compose.yaml`, le repli `127.0.0.1` est réservé aux vérifications de Compose : pour représenter la production, renseigner explicitement `WG_BIND_IP` dans un environnement privé. Le fichier `arcane-agent.example.yaml` exige `WG_AGENT_BIND_IP`, `WG_MANAGER_IP` et `ARCANE_AGENT_TOKEN` ; il n'embarque aucune valeur de production. **Ne pas le déployer sans vérifier le pare-feu, le routage, les droits et les secrets.**
+
+Un binding sur une adresse donnée **réduit l'exposition** mais ne démontre pas que seul le tunnel peut joindre le port : Docker peut permettre certains chemins de routage direct selon la configuration du bridge et de l'hôte. Il faut tester IPv4/IPv6, la portée réelle des ports, les accès directs et les règles de pare-feu.
 
 ### Authentik et Arcane
 
