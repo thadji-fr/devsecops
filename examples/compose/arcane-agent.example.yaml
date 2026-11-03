@@ -1,0 +1,25 @@
+# Exemple d'agent Arcane en mode Direct, pour un hôte Docker distant.
+# Les IP et le jeton sont fournis hors dépôt ; cet exemple n'a pas été déployé.
+# Sur le serveur distant, WG_AGENT_BIND_IP doit être l'IP WireGuard DE CET HÔTE.
+# WG_MANAGER_IP est l'adresse WireGuard du VPS où se trouve le manager.
+# Ne pas publier l'agent sur 0.0.0.0 ; vérifier aussi le pare-feu Docker/hôte.
+services:
+  arcane-agent:
+    image: ghcr.io/getarcaneapp/agent:latest
+    restart: unless-stopped
+    environment:
+      AGENT_MODE: "true"
+      AGENT_TOKEN: "${ARCANE_AGENT_TOKEN:?required_private_token}"
+      MANAGER_API_URL: "http://${WG_MANAGER_IP:?required_private_vps_wg_ip}:3552"
+    ports:
+      - target: 3553
+        published: "3553"
+        host_ip: "${WG_AGENT_BIND_IP:?required_private_agent_wg_ip}"
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - arcane-agent-data:/app/data
+volumes:
+  arcane-agent-data:
