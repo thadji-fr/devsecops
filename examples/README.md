@@ -13,6 +13,7 @@ Le **périmètre technique** est fondé sur mes inventaires : frontal Nginx, rel
 - [Arcane — manager Docker, socket et projets Compose](compose/arcane.compose.yaml)
 - [Variables fictives pour un laboratoire](compose/.env.example)
 - [Nginx : reverse proxies HTTP, Authentik et Stream](nginx/README.md)
+- [Authentik : PostgreSQL, Server et Worker (Compose de laboratoire)](authentik/compose.yaml)
 - [CrowdSec : acquisition de logs Nginx](crowdsec/acquis.d/nginx.yaml)
 - [Tests Nginx et matrice de validations (réelles vs laboratoire)](../projects/network-edge/validation.md)
 
